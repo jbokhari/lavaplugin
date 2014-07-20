@@ -1,16 +1,29 @@
 <?php
 /**
- * Plugin core defines several methods for Lava,
+ * Plugin core defines several methods for Lava Plugins
  * @package Lava
  * @version 2.2
  * @author Jameel Bokhari
  * @license GPL2
- * Last updated 7/19/2014
+ * Last updated 7/20/2014
  */
-error_reporting(E_ALL);
 if (!class_exists('LavaCorePlugin22')) :
+	//logging class for debugging and error logging
 	require_once "class.lava.logging.php";
+	//LavaFactor creates lavaoptions
+	require_once "class.lava.factory.php";
+	// Load abstract LavaOption class extended by options
 	require_once "class.lava.plugin.options.php";
+	// Load various options
+	require_once "class.lava.plugin.option.str.php";
+	require_once "class.lava.plugin.option.url.php";
+	require_once "class.lava.plugin.option.array.php";
+	require_once "class.lava.plugin.option.sortable.php";
+	require_once "class.lava.plugin.option.textarea.php";
+	require_once "class.lava.plugin.option.int.php";
+	require_once "class.lava.plugin.option.image.php";
+	require_once "class.lava.plugin.option.email.php";
+	require_once "class.lava.plugin.option.bool.php";
 	class LavaCorePlugin22 extends LavaLogging22 {
 		public $optionspage = array();
 		public $options = array();
@@ -19,10 +32,12 @@ if (!class_exists('LavaCorePlugin22')) :
 		public $useAdminJs = false;
 		public $useFrontendCss = false;
 		public $useFrontendJs = false;
+		public $version = "0.0.0";
 		public $newStatic;
 		public $newDynamic;
 		public $tabs;
 		public $name;
+		public $admin_message = "";
 		private static $fieldnumber = 0;
 
 		protected $option_prefix;
@@ -163,36 +178,25 @@ if (!class_exists('LavaCorePlugin22')) :
 		    }
 		    echo '</h2>';
 		}
-		public function set_admin_loc_js_values(){
-			$include = array();
-			$include['prefix'] = $this->option_prefix;
-
-			foreach($this->dynamic as $name => $values){
-
-				if ( isset($values['in_admin_js']) ){
-					$default = $values['default'];
-					$value = $this->get_cache( $name, $default );
-					$include[$name] = $value;
-				}
-
-			}	
-			return $include;
-		}
 		public function set_frontend_loc_js_values(){
 			$include = array();
-			$include['prefix'] = $this->option_prefix;
+			$include['plugin_prefix'] = $this->option_prefix;
+			$include['plugin_version'] = $this->version;
 
-			foreach($this->dynamic as $name => $values){
+			foreach($this->lava_options as $option){
 
-				if ( isset($values['in_js']) ){
-					$default = $values['default'];
-					$value = $this->get_cache( $name, $default );
+				if ( isset( $option->in_js ) && $option->in_js == true ){
+					$value = $option->get_value();
 					$include[$name] = $value;
 				}
 
 			}	
 			return $include;
 		}
+		/**
+		 * Gets the current version of the plugin. If the plugin has an option named debug and if it's set to anything that returns true, the plugin will generate a rand unique ID for version. This can be used to always refresh scripts.
+		 * @return (string) plugin verion or random string
+		 */
 		public function get_script_version(){
 			$option = $this->prefix('debug');
 			if (get_option( $option, $default = false )){
@@ -201,44 +205,16 @@ if (!class_exists('LavaCorePlugin22')) :
 				return $this->ver;
 			}
 		}
+		/**
+		 * Loops through each registered option
+		 * @param (int) $current_tab 
+		 * @return type
+		 */
 		public function update_admin_options($current_tab = null){
 			$msg = '';
 			$affected = 0;
 			extract($_POST);
 			// print_r($_POST);
-			// print_r($this->cache);
-			foreach ($this->dynamic as $name => $values) {
-				if ( $values['type'] == 'info' ) {
-					continue;
-				}
-				if ( $values['in_menu'] && $values['tab'] == $current_tab ){
-					if (!isset($$name) && $values['type'] == 'bool'){
-						$newvalue = false;
-					} else {
-						$newvalue = $$name;
-					}
-					if ( $this->update_option($name, $newvalue) ){
-						$this->cache[$name] = $newvalue;
-						$affected++;
-						// $this->
-					}
-				}
-
-			}
-			if( $affected > 0 ){
-				$msg .= "Options have been saved.";
-			} else {
-				$msg .= 'No options were changed!';
-			}
-
-			return $msg;
-		}
-		public function update_admin_options2($current_tab = null){
-			$this->_log("{__FUNCTION__} started.");
-			$msg = '';
-			$affected = 0;
-			extract($_POST);
-			print_r($_POST);
 			foreach ($this->lava_options as $option) {
 				$id = $option->id;
 				$this->_log("Inside loop to save $option->name...");
@@ -270,6 +246,11 @@ if (!class_exists('LavaCorePlugin22')) :
 			}
 			return $msg;
 		}
+		/**
+		 * Determines whether or not to save plugin settings. Checks if save_post variable is set by hidden field in this plugin, verifies nonce and user permission. If all passes, runs update_admin_options()
+		 * @uses self::update_admin_options()
+		 * @return (string) A message based on actions performed (or not performed).
+		 */
 		public function save_admin(){
 			$savepost = $this->prefix . "save_post";
 			$this->_log("save_admin() started");
@@ -286,22 +267,22 @@ if (!class_exists('LavaCorePlugin22')) :
 					$this->_log("Nonce verified.");
 				 	if ( current_user_can( 'manage_options' ) ){
 				 		$this->_log("User verified");
-						return $this->update_admin_options2($current_tab);
+						$this->admin_message = $this->update_admin_options($current_tab);
 					} else {
 						$this->_log("User permission does not allow saving field data. Nothing was changed.");
-						return "You lack permission to modify these settings.";
+						$this->admin_message = "You lack permission to modify these settings.";
 					}
 				} else {
 					$this->_log("Nonce could not verify.");
-					return "There was an error with the nonce field. Please try again.";
+					$this->admin_message = "There was an error with the nonce field. Please try again.";
 				}
 			endif;
 		}
 		/**
-		 * Display admin page. Now uses LavaOption objects.
-		 * @return type
+		 * Display admin page by printing html to page.
+		 * @return void
 		 */
-		public function display_admin_page2(){
+		public function display_admin_page(){
 			echo "<div class='wrap " . $this->prefix . "options-page " . $this->prefix . "wrap'>";
 			// $msg = $this->save_admin();
 			$current_tab = ( isset( $_GET['tab'] ) ) ? intval( $_GET['tab'] ) : 0 ;
@@ -313,8 +294,8 @@ if (!class_exists('LavaCorePlugin22')) :
 
 			$this->do_tabs($current_tab);
 
-			if($msg != ''){
-				echo "<div id='message " . $this->prefix. "message' class='updated'><p>{$msg}</p></div>";
+			if($this->admin_message != ''){
+				echo "<div id='message " . $this->prefix. "message' class='updated'><p>{$this->admin_message}</p></div>";
 			}
 
 			echo "<form action='' method='post'>";
@@ -329,18 +310,23 @@ if (!class_exists('LavaCorePlugin22')) :
 				wp_nonce_field( $nonceaction, $noncename );
 				echo "<button class='button button-primary {$this->prefix}plugin-save-btn' type='submit'>Save Options</button>";
 			}
-			if( $this->is_debug_mode() ){
-				// print_r($this->cache);
-				$this->display_errors();
-				$this->display_logs();
-				foreach($this->lava_options as $option){
-					echo $option->label;
-					$option->display_logs();
-					$option->display_errors();
-				}
-			}
+			$this->debug_info();
 			echo "</form>";
 			echo "</div><!-- EOF WRAP -->";
+		}
+		public function debug_info(){
+			return false;
+			//Used to do all this...
+			// if( $this->is_debug_mode() ){ // no longer defined
+			// 	// print_r($this->cache);
+			// 	$this->display_errors();
+			// 	$this->display_logs();
+			// 	foreach($this->lava_options as $option){
+			// 		echo $option->label;
+			// 		$option->display_logs();
+			// 		$option->display_errors();
+			// 	}
+			// }
 		}
 		public function generate_option_fields($tab){
 			foreach ($this->lava_options as $option) {
@@ -358,174 +344,22 @@ if (!class_exists('LavaCorePlugin22')) :
 				echo "</div>";
 			}
 		}
-		public function display_admin_page(){
-			global $plugin_tabs;
-			$screen = get_current_screen();
-			// print_r($screen);
-			echo "<div class='wrap " . $this->prefix. "options-page " . $this->prefix . "wrap'>";
-			$current_tab = ( isset( $_GET['tab'] ) ) ? intval( $_GET['tab'] ) : 0 ;
-			$msg = '';
-			$noncename = $this->prefix . 'nonce';
-			$nonce = ( isset( $_POST[$noncename] ) ) ? $_POST[$noncename] : '' ;
-			$nonceaction = $this->prefix . 'do_save_nonce';
-			if( isset($_POST['save_post']) ){
-				if ( wp_verify_nonce( $nonce, $nonceaction ) && current_user_can( 'manage_options' ) ){
-					$msg = $this->update_admin_options($current_tab);
-				} else {
-					wp_die("You lack permission to modify these settings.");
-				}
-				
-			}
-
-			echo "<h2 class='" . $this->prefix . "option-page-title'>Plugin Options</h2>";
-
-			$this->do_tabs($current_tab);
-
-			if($msg != ''){
-				echo "<div id='message " . $this->prefix. "message' class='updated'><p>{$msg}</p></div>";
-			}
-
-			echo "<form action='' method='post'>";
-			$options = $this->dynamic;
-			foreach ($options as $name => $values) {
-				if( isset( $values['tab'] ) && $values['tab'] != $current_tab ){
-					continue;
-				}
-				$this->fieldnumber++;
-				// @uses static int $this->fieldnumber starting at 1
-				echo "<div class='option-block field-{$this->fieldnumber}'>";
-				if ( isset( $values['in_menu'] ) && $values['in_menu'] ){
-					$this->display_admin_option($name);
-				}
-				echo "<div style='clear:both;'></div>";
-				echo "</div>";
-			}
-			$key = intval($current_tab);
-			$tabvals = $plugin_tabs[$key];
-			$hidesave = ( isset($tabvals['informational']) ) ? $tabvals['informational'] : false;
-			if ( ! $hidesave ){
-				echo "<input type='hidden' name='save_post' value='1' />";
-				echo "<input type='hidden' name='tab' value='{$current_tab}' />";
-				wp_nonce_field( $nonceaction, $noncename );
-				echo "<button class='button button-primary blank_plugin-save-btn' type='submit'>Save Options</button>";
-			}
-			if( $this->is_debug_mode() ){
-				// print_r($this->cache);
-				$this->display_errors();
-				$this->display_logs();
-			}
-			echo "</form>";
-			echo "</div><!-- EOF WRAP -->";
-
-		}
-		public function is_debug_mode(){
-			return $this->get_cache( 'debug', $default = false );
-		}
 		/**
 		 * Register the admin page
 		 * @return type
 		 */
 		public function add_admin_page_to_menu(){
 			wp_enqueue_media();
-			$function = array($this, 'display_admin_page2');
+			$function = array($this, 'display_admin_page');
 			$admin_page = $this->static['options_page'];
 			add_submenu_page( $admin_page['parent_slug'], $admin_page['page_title'], $admin_page['menu_title'], $admin_page['capability'], $admin_page['menu_slug'], $function );
-		} 
-		// public function new_display_ad_option( $name ){
-		// 	echo $this->lava_options[$name]->option_field_html();
-		// }
-		public function display_admin_option( $name ){
-			// print_r($this);
-			$option = $this->dynamic[$name];
-			$type = $option['type'];
-			$default = $option['default'];
-			if ($type === 'function'){
-				if ( method_exists($this, $default) ){
-					return $this->$default();
-				}
-			}
-
-			$html = '';
-
-			// strval may seem a little paranoid but for extension may be necessary
-			$admin_before = ( isset($option['admin_before'])) ? strval($option['admin_before']) : '';
-			$admin_after = ( isset($option['admin_after'])) ? strval($option['admin_after']) : '';
-			$class = ( isset($option['class'])) ? strval($option['class']) : '';
-			$description = ( isset($option['description'])) ? strval($option['description']) : '';
-			$after = ( isset($option['after'])) ? strval($option['after']) : '';
-			// $inputClass = ( isset($option['inputClass'])) ? strval($option['inputClass']) : '';
-
-			if ( isset( $option['label'] ) ){
-				$label = $option['label'];
-			} else {
-				$label = '';
-			}
-			// attributes value, name, type, required
-			$id = $this->prefix($name);
-			$value = $this->get_cache($name, $default );
-			// $nameattr = $name; not necessary but good reminder
-			$required = ( isset($option['required']) && $option['required'] == true ) ? 'required="required"' : '' ;
-			if ( isset( $option['values'] ) ){
-				$valuesarray = $option['values'];
-			}
-			$html .= $admin_before;
-			if ($type == 'info'){
-				$html .= $this->info_field($label, $id, $default, $description);
-				echo $html;
-				return true;
-			}
-			$html .= $after;		
-			$html .= "<label class='option-label' for='{$id}'>$label</label>";
-			$value = stripslashes( $value );
-			switch($type){
-				case 'sortable':
-					$html = $this->create_sortable($name, $option);
-					break;
-				case 'url':
-					$html .= "<input id='{$id}' class='' {$required} type='url' name='{$name}' value='{$value}' />";
-					break;
-				case 'email':
-					$html .= "<input id='{$id}' class='{$class}' {$required} type='email' name='{$name}' value='{$value}' />";
-					break;
-				case 'str':
-					$html .= "<input id='{$id}' class='{$class}' {$required} type='text' name='{$name}' value='{$value}' />";
-					break;
-				case 'textarea':
-					$html .= "<textarea id='{$id}' class='{$class}' {$required} type='text' name='{$name}' >{$value}</textarea>";
-					break;
-				case 'int' :
-					$html .= "<input id='{$id}' class='{$class}' {$required} type='number' min='' max='' name='{$name}' value='{$value}' />";
-					break;
-				case 'bool' :
-					$checked = ($value) ? 'checked="checked"' : '' ;
-					echo $value;
-					$html .= "<input id='{$id}' class='{$class}' {$required} {$checked} type='checkbox' name='{$name}' value='1' />";
-					break;
-				case 'image' :
-					$html .= "<div class='image-container'>
-						<img id='{$id}_preview' class='image-preview {$id}-preview' src='{$value}' alt=''>
-					</div>";
-					$html .= "<input id='{$id}' class='{$class}' {$required} type='hidden' name='{$name}' value='{$value}' />";
-					$html .= "<input id='{$id}_button' type='button' class='media-upload media-{$id}' value='Upload'>";
-					$html .= "<input id='{$id}_clear' type='button' class='media-upload-clear media-{$id}-clear' value='Clear'>";
-					break;
-				case 'array' :
-					echo "<select name='{$name}' id='{$id}'>";
-					foreach( $valuesarray as $optionname => $label ){
-						$checked = ( $value === $optionname ) ? 'checked="checked"' : '' ;
-						echo "<option value='{$optionname}' {$checked} >{$label}</option>";
-					}
-					echo "</select>";
-					break;
-				default :
-					break;
-			}
-			if ($description != ''){
-				$html .= "<p class='description'>{$description}</p>";
-			}
-			$html .= $admin_after;
-			echo $html;
 		}
+		/**
+		 * Create Sortable field
+		 * @param type $name 
+		 * @param type $option 
+		 * @return type
+		 */
 		public function create_sortable($name, $option){
 			$fieldhtml = '';
 			if ( empty( $option["sortable"] ) ){
@@ -763,11 +597,6 @@ if (!class_exists('LavaCorePlugin22')) :
 			if ( $this->useAdminJs ){
 				wp_register_script( 'lavaadminjs', $this->jsdir . 'admin.js', 'jquery', $version );
 				$js_global = $this->get_localized_js_object_name();
-				wp_localize_script(
-					'lavaadminjs',
-					$js_global,
-					$this->set_admin_loc_js_values()
-				);
 				wp_enqueue_script('lavaadminjs');
 			}
 		}

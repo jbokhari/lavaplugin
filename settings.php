@@ -43,7 +43,55 @@ $dynamic = array( //array of available options
 	),
 	array(
 		'name' => 'test_array_1',
-		'label' => 'Test Array 1',
+		'label' => 'Test Array (radio)',
+		'type' => "array",
+		'ui' => 'radio',
+		'choices' => array(
+			array(
+			    "label" => "Choice 1",
+				"value" => "choice1"
+				),
+			array(
+			    "label" => "Choice 2",
+			    "value" => "choice2"
+	      		)
+		)
+	),
+	array(
+		'name' => 'test_array_2',
+		'label' => 'Test Array (checkboxes)',
+		'type' => "array",
+		'ui' => 'checkboxes',
+		'choices' => array(
+			array(
+			    "label" => "Choice 1",
+				"value" => "choice1"
+				),
+			array(
+			    "label" => "Choice 2",
+			    "value" => "choice2"
+	      		)
+		)
+	),
+	array(
+		'name' => 'test_array_3',
+		'label' => 'Test Array (select)',
+		'type' => "array",
+		'ui' => 'select',
+		'choices' => array(
+			array(
+			    "label" => "Choice 1",
+				"value" => "choice1"
+				),
+			array(
+			    "label" => "Choice 2",
+			    "value" => "choice2"
+	      		)
+		)
+	),
+	array(
+		'name' => 'test_array_4',
+		'label' => 'Test Array (multiple)',
 		'type' => "array",
 		'ui' => 'multiple',
 		'choices' => array(
@@ -56,7 +104,13 @@ $dynamic = array( //array of available options
 			    "value" => "choice2"
 	      		)
 		)
-	)
+	),
+	array(
+	      "name" => "number_field",
+	      "label" => "Number Field Test",
+	      "type" => "int",
+	      "rules" => array()
+      )
 	// 'credit3' => array(
 	// 	'label' => 'Empty Text Field',
 	// 	'default' => false,

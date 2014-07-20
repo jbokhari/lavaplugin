@@ -1,4 +1,11 @@
 <?php
+/**
+ * LavaLogging, basic class for error logging and human friendly display
+ * @package Lava
+ * @version 2.2
+ * @author Jameel Bokhari
+ * @license GPL22
+ */
 abstract class LavaLogging22 {
 	public $error = array();
 	public $log = array();
