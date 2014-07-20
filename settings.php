@@ -1,0 +1,80 @@
+<?php if ( ! defined( "ECT_RELATED_CONTENT_PATH" ) ) {
+  wp_die();
+}
+
+$dynamic = array( //array of available options
+
+	/**************************************
+	::::::::::::::::EXTERNAL:::::::::::::::
+	**************************************/
+
+	"recentdev" => array(
+	    'name' => 'recentdev',
+		'label' => "Recent Developments",
+		"default" => null,
+		"required" => false,
+		"type" => "sortable",
+		"sortable" => array(
+			"post_type" => "post"
+			),
+		"in_menu" => true,
+		"class" => "",
+		"tab" => 0,
+		"in_js" => false
+
+	),
+	"featuredpost" => array(
+	    'name' => 'featuredpost',
+		'label' => "Featured Posts",
+		"default" => null,
+		"required" => false,
+		"type" => "sortable",
+		"sortable" => array(
+			"post_type" => "post"
+			),
+		"in_menu" => true,
+		"class" => "",
+		"tab" => 0,
+		"in_js" => false
+
+	),
+	'testcheckbox' => array(
+	    'name' => 'testcheckbox',
+		'label' => "Test CheckBox",
+		"default" => null,
+		"required" => false,
+		"type" => "bool",
+		"in_menu" => true,
+		"class" => "",
+		"tab" => 0,
+		"in_js" => false
+	)
+	// 'credit3' => array(
+	// 	'label' => 'Empty Text Field',
+	// 	'default' => false,
+	// 	'required' => false,
+	// 	'type' => 'str',
+	// 	'in_menu' => true,
+	// 	'class' => '',
+	// 	'tab' => 0,
+	// 	'in_js' => false
+	// )
+);
+
+$static = array(
+	'tabs' => array(
+		0 => array(
+			'label' => __('General Settings', 'text_domain'),
+			'capability' => 'manage_options', //an idea, not in use
+			'informational' => false
+		)
+	),
+	'options_page' =>	array(
+		'parent_slug' => 'options-general.php',
+		'page_title'  => 'Featured Posts',
+		'menu_title'  => 'Featured Posts',
+		'capability'  => 'manage_options',
+		'menu_slug'   => 'related-content-options'
+	)
+);
+/* EOF */
