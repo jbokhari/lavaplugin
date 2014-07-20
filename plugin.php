@@ -111,3 +111,6 @@ class LavaPlugin extends LavaCorePlugin22 {
 }
 // $LavaPlugin = new LavaPlugin();
 $LavaPlugin = LavaPlugin::get_instance();
+// echo "<pre>";
+// print_r($LavaPlugin);
+// echo "</pre>";

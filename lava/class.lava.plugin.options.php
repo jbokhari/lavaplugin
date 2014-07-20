@@ -8,11 +8,13 @@ abstract class LavaOption22 extends LavaLogging22 {
 	public $ui = "default";
 	public $default = "";
 	public $in_menu = "true";
+	public $required = false;
 	public $classes = array();
 	public $in_js = false;
 	public $tab = 0;
 	function __construct($prefix, array $options){
 		// print_r($options);
+		$this->_log("Instantiated");
 		$this->prefix = $prefix;
 		if ( isset( $options['name'] ) ){
 			$this->name = $options['name'];
@@ -27,10 +29,17 @@ abstract class LavaOption22 extends LavaLogging22 {
 		$this->id = $options['id'] = $this->prefix . $options['name'];
 		$this->default_optionals($options);
 	}
+	public function get_option_label_html(){
+		$this->_log("Run get_option_label_html()");
+		$html = "";
+		$html .= "<label for='{$this->id}'>{$this->label}</label>";
+		return $html;
+	}
 	final private function delete_value(){
 		return delete_option( $this->id );
 	}
 	public function default_optionals($options){
+		$this->_log("Run default_optionals()");
 		if ( isset( $options['type'] ) )
 			$this->type = $options['type'];
 		if ( isset( $options['default'] ) )
@@ -39,9 +48,9 @@ abstract class LavaOption22 extends LavaLogging22 {
 			$this->in_menu = $options['in_menu'];
 		if ( isset( $options['class'] ) ){
 			if( is_array( $options['class'] ) )
-				$this->class = array_merge($this->classes, $options['class']);
+				array_merge($this->classes, $options['class']);
 			else
-				$this->class = array_push($this->classes, $options['class'] );
+				array_push($this->classes, $options['class'] );
 		}
 		if ( isset( $options['in_js'] ) )
 			$this->in_js = $options['in_js'];
@@ -55,7 +64,7 @@ abstract class LavaOption22 extends LavaLogging22 {
 			$this->value = get_option($this->id, $default);
 		return $this->value;
 	}
-	protected function is_required(){
+	public function is_required(){
 		if ($this->required){
 			$this->_error("set_value() could not be performed on {$this->name} because it is required and the value was empty after validation.");
 			return true;
@@ -63,7 +72,8 @@ abstract class LavaOption22 extends LavaLogging22 {
 			return false;
 		}
 	}
-	protected function set_value($newValue = ""){
+	public function set_value($newValue = ""){
+		$this->_log("set_value() was run.");
 		$newValue = $this->validate($newValue);
 		if ( $newValue == "" && $this->is_required() )
 			return false;
@@ -84,17 +94,17 @@ abstract class LavaOption22 extends LavaLogging22 {
 			"";
 	}
 	abstract public function validate($newValue = "");
-	abstract public function option_field_html();
+	abstract public function get_option_field_html();
 }
 final class LavaOption_str extends LavaOption22 {
-	public function option_field_html(){
+	public function get_option_field_html(){
 		$value = $this->get_value();
 		$value = esc_attr($value);
 		$classes = $this->input_classes();
-		$required = $this->require_html();
+		$required = $this->required_html();
 		$name = $this->name;
 		$id = $this->id;
-		return "<input id='{$id}' class='{$classes}' {$required} type='text' name='{$name}' value='{$value}' />";
+		return "<input id='{$id}' class='{$classes}' {$required} type='text' name='{$id}' value='{$value}' />";
 	}
 	public function validate($newValue = ""){
 		/* later we can add better validation here like string length, zip code validation and stuff like that */
@@ -102,14 +112,14 @@ final class LavaOption_str extends LavaOption22 {
 	}
 }
 final class LavaOption_url extends LavaOption22 {
-	public function option_field_html(){
+	public function get_option_field_html(){
 		$value = $this->get_value();
 		$value = esc_attr($value);
 		$classes = $this->input_classes();
-		$required = $this->require_html();
+		$required = $this->required_html();
 		$name = $this->name;
 		$id = $this->id;
-		return "<input id='{$id}' class='{$classes}' {$required} type='url' name='{$name}' value='{$value}' />";
+		return "<input id='{$id}' class='{$classes}' {$required} type='url' name='{$id}' value='{$value}' />";
 	}
 	public function validate($newValue = ""){
 		return esc_url_raw( $newValue );
@@ -166,20 +176,19 @@ final class LavaOption_array extends LavaOption22 {
 
 		return $this->value;
 	}
-	public function option_field_html(){
+	public function get_option_field_html(){
 		$value = $this->get_value();
-		$value = esc_attr($value);
 		$classes = $this->input_classes();
-		$required = $this->require_html();
+		$required = $this->required_html();
 		$name = $this->name;
 		$id = $this->id;
-		$multiple = $this->multiple_html;
+		$multiple = $this->multiple_html();
 		$html = "";
 		switch($this->ui) {
 			case "multiple" :
 			case "select" :
-				$html .= "<select id='{$id}' class='{$classes}' {$multiple} {$required} type='url' name='{$name}[]'>";
-				foreach ($this->$choices as $c){
+				$html .= "<select id='{$id}' class='{$classes}' {$multiple} {$required} type='url' name='{$id}[]'>";
+				foreach ($this->choices as $c){
 					$val = $c["value"];
 					$label = $c["label"];
 					$selected = $this->selected_html($val);
@@ -195,7 +204,7 @@ final class LavaOption_array extends LavaOption22 {
 					$checked = $this->checked_html($val);
 					$choiceID = $this->id . "-" . $this->get_choice_slug($label);
 					$html .= "<label for='{$choiceID}'>$label</label>";
-					$html .= "<input id='{$choiceID}' type='checkbox' name='{$name}[]' value='{$val}' />";
+					$html .= "<input id='{$choiceID}' type='checkbox' name='{$id}[]' value='{$val}' />";
 				}
 				$html .= "</div>";
 				break;
@@ -207,7 +216,7 @@ final class LavaOption_array extends LavaOption22 {
 					$checked = $this->checked_html($val);
 					$choiceID = $this->id . "-" . $this->get_choice_slug($label);
 					$html .= "<label for='{$choiceID}'>$label</label>";
-					$html .= "<input id='{$choiceID}' type='radio' name='{$name}[]' value='{$val}' />";
+					$html .= "<input id='{$choiceID}' type='radio' name='{$id}[]' value='{$val}' />";
 				}
 				$html .= "</div>";
 				break;
@@ -216,6 +225,7 @@ final class LavaOption_array extends LavaOption22 {
 				return "";
 				break;
 		}
+		return $html;
 	}
 	public function is_valid_choice_value($val){
 		foreach ($this->choices as $choice){
@@ -256,7 +266,7 @@ final class LavaOption_array extends LavaOption22 {
 	}
 }
 final class LavaOption_textarea extends LavaOption22 {
-	public function option_field_html(){
+	public function get_option_field_html(){
 		"";
 	}
 	public function validate($newValue = ""){
@@ -264,7 +274,7 @@ final class LavaOption_textarea extends LavaOption22 {
 	}
 }
 final class LavaOption_int extends LavaOption22 {
-	public function option_field_html(){
+	public function get_option_field_html(){
 		"";
 	}
 	public function validate($newValue = ""){
@@ -272,7 +282,7 @@ final class LavaOption_int extends LavaOption22 {
 	}
 }
 final class LavaOption_sortable extends LavaOption22 {
-	public function option_field_html(){
+	public function get_option_field_html(){
 		"";
 	}
 	public function validate($newValue = ""){
@@ -280,7 +290,7 @@ final class LavaOption_sortable extends LavaOption22 {
 	}
 }
 final class LavaOption_image extends LavaOption22 {
-	public function option_field_html(){
+	public function get_option_field_html(){
 		"";
 	}
 	public function validate($newValue = ""){
@@ -288,7 +298,7 @@ final class LavaOption_image extends LavaOption22 {
 	}
 }
 final class LavaOption_email extends LavaOption22 {
-	public function option_field_html(){
+	public function get_option_field_html(){
 		"";
 	}
 	public function validate($newValue = ""){
@@ -296,11 +306,31 @@ final class LavaOption_email extends LavaOption22 {
 	}
 }
 final class LavaOption_bool extends LavaOption22 {
-	public function option_field_html(){
-		"";
+	public function get_option_field_html(){
+		$value = $this->get_value();
+		$classes = $this->input_classes();
+		$required = $this->required_html();
+		$checked = $this->checked_html();
+		$name = $this->name;
+		$id = $this->id;
+		$this->checked_html();
+		return "<input id='{$id}' class='{$classes}' {$checked} {$required} type='checkbox' name='{$id}' value='1' />";
 	}
-	public function validate($newValue = ""){
-		return true;
+	public function is_required(){
+		return false;
+	}
+	public function checked_html(){
+		if ($this->get_value() == "true"){
+			return "checked='checked'";
+		} else {	
+			return "";
+		}
+	}
+	public function validate($value = null){
+		if ($value && $value != "false")
+			return "true";
+		else
+			return "false";
 	}
 }
 final class LavaFactory {

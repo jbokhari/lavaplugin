@@ -5,8 +5,9 @@
  * @version 2.2
  * @author Jameel Bokhari
  * @license GPL2
- * Last updated 7/17/2014
+ * Last updated 7/19/2014
  */
+error_reporting(E_ALL);
 if (!class_exists('LavaCorePlugin22')) :
 	require_once "class.lava.logging.php";
 	require_once "class.lava.plugin.options.php";
@@ -22,7 +23,7 @@ if (!class_exists('LavaCorePlugin22')) :
 		public $newDynamic;
 		public $tabs;
 		public $name;
-		protected static $fieldnumber = 0;
+		private static $fieldnumber = 0;
 
 		protected $option_prefix;
 		protected $ver;
@@ -39,6 +40,7 @@ if (!class_exists('LavaCorePlugin22')) :
 			add_action( 'admin_menu', array($this, 'add_admin_page_to_menu') );	
 			$this->init();
 			$this->enqueue_scripts();
+			add_action( 'admin_head', array($this, "save_admin"));
 		}
 		public function enqueue_scripts(){
 			if( $this->get_cache( 'plugin_activated', false ) ){
@@ -60,7 +62,7 @@ if (!class_exists('LavaCorePlugin22')) :
 				$this->_log("No option found in cache, creating cached value for $option");
 				$id = $this->prefix($option);
 				if ($default === null){
-					$default = $this->options[$option]['default'];
+					$default = $this->dynamic[$option]['default'];
 				}
 				$this->cache[$option] = get_option($id, $default);
 				// if ( isset( $_GET['test'] ) ) print_r($this->cache[$option]);
@@ -85,7 +87,7 @@ if (!class_exists('LavaCorePlugin22')) :
 				$this->dynamic = $dynamic;
 				foreach( $this->dynamic as $option ) {
 					$name = $option['name'];
-					$this->newDynamic[$name] = LavaFactory::create($this->prefix, $option );
+					$this->lava_options[$name] = LavaFactory::create($this->prefix, $option );
 				}
 			} else {
 				$this->static = $options['static'];
@@ -231,17 +233,136 @@ if (!class_exists('LavaCorePlugin22')) :
 
 			return $msg;
 		}
+		public function update_admin_options2($current_tab = null){
+			$this->_log("{__FUNCTION__} started.");
+			$msg = '';
+			$affected = 0;
+			extract($_POST);
+			print_r($_POST);
+			foreach ($this->lava_options as $option) {
+				$id = $option->id;
+				$this->_log("Inside loop to save $option->name...");
+				if ( $option->type == 'info' ) {
+					$this->_log("{$this->name} was a info field, skipping save function.");
+					continue;
+				}
+				if ($option->tab != $current_tab){
+					$this->_log("{$this->name} is not member of current tab $current_tab, skipping save function.");
+					continue;
+				}
+				if ( $option->in_menu == false ){
+					$this->_log("{$this->name} is not in_menu, skipping save function.");
+				}
+				$this->_log(print_r($option, true));
+				$this->_log("Current Tab: $current_tab");
+				// rather than check if the value is bool, we'll just assume that when we get this far, if the post data is missing, the value is false;
+				$newValue = isset($$id) ? $$id : "false";
+				if ( $option->in_menu ){
+					// $this->_log("set_value is being run. {$newValue}");
+					if ($option->set_value($newValue) )
+						$affected++;
+				}
+			}
+			if( $affected > 0 ){
+				$msg .= "Options have been saved.";
+			} else {
+				$msg .= 'No options were changed!';
+			}
+			return $msg;
+		}
+		public function save_admin(){
+			$savepost = $this->prefix . "save_post";
+			$this->_log("save_admin() started");
+			// print_r($_POST);
+			if( isset( $_POST[$savepost] ) ) :
+				$this->_log("$savepost was set");
+				// print_r($_POST);
+				$this->_log("Going to attempt to save values");
+				$noncename = $this->prefix . 'nonce';
+				$nonceaction = $this->prefix . 'do_save_nonce';
+				$nonce = ( isset( $_POST[$noncename] ) ) ? $_POST[$noncename] : '' ;
+				$current_tab = ( isset( $_POST['tab'] ) ? $_POST['tab'] : null );
+				if ( wp_verify_nonce( $nonce, $nonceaction ) ){
+					$this->_log("Nonce verified.");
+				 	if ( current_user_can( 'manage_options' ) ){
+				 		$this->_log("User verified");
+						return $this->update_admin_options2($current_tab);
+					} else {
+						$this->_log("User permission does not allow saving field data. Nothing was changed.");
+						return "You lack permission to modify these settings.";
+					}
+				} else {
+					$this->_log("Nonce could not verify.");
+					return "There was an error with the nonce field. Please try again.";
+				}
+			endif;
+		}
+		/**
+		 * Display admin page. Now uses LavaOption objects.
+		 * @return type
+		 */
+		public function display_admin_page2(){
+			echo "<div class='wrap " . $this->prefix . "options-page " . $this->prefix . "wrap'>";
+			// $msg = $this->save_admin();
+			$current_tab = ( isset( $_GET['tab'] ) ) ? intval( $_GET['tab'] ) : 0 ;
+			$msg = '';
+			$noncename = $this->prefix . 'nonce';
+			$nonceaction = $this->prefix . 'do_save_nonce';
+			// $msg = $this->save_admin();
+			echo "<h2 class='" . $this->prefix . "option-page-title'>Plugin Options</h2>";
+
+			$this->do_tabs($current_tab);
+
+			if($msg != ''){
+				echo "<div id='message " . $this->prefix. "message' class='updated'><p>{$msg}</p></div>";
+			}
+
+			echo "<form action='' method='post'>";
+			$this->generate_option_fields($current_tab);
+			$key = intval($current_tab);
+			$tabvals = $this->static['tabs'][$key];
+			$hidesave = ( isset($tabvals['informational']) ) ? $tabvals['informational'] : false;
+			if ( ! $hidesave ){
+				$savepost = $this->prefix . "save_post";
+				echo "<input type='hidden' name='{$savepost}' value='1' />";
+				echo "<input type='hidden' name='tab' value='{$current_tab}' />";
+				wp_nonce_field( $nonceaction, $noncename );
+				echo "<button class='button button-primary {$this->prefix}plugin-save-btn' type='submit'>Save Options</button>";
+			}
+			if( $this->is_debug_mode() ){
+				// print_r($this->cache);
+				$this->display_errors();
+				$this->display_logs();
+				foreach($this->lava_options as $option){
+					echo $option->label;
+					$option->display_logs();
+					$option->display_errors();
+				}
+			}
+			echo "</form>";
+			echo "</div><!-- EOF WRAP -->";
+		}
+		public function generate_option_fields($tab){
+			foreach ($this->lava_options as $option) {
+				if( $option->tab != $tab ){
+					continue;
+				}
+				$this->fieldnumber++;
+				// @uses static int $this->fieldnumber starting at 1
+				echo "<div class='option-block field-{$this->fieldnumber}'>";
+				if ( isset( $option->in_menu ) && $option->in_menu ){
+					echo $option->get_option_label_html();
+					echo $option->get_option_field_html();
+				}
+				echo "<div style='clear:both;'></div>";
+				echo "</div>";
+			}
+		}
 		public function display_admin_page(){
-
-			echo "<pre>";
-			print_r($this);
-			echo "</pre>";
-
 			global $plugin_tabs;
 			$screen = get_current_screen();
 			// print_r($screen);
 			echo "<div class='wrap " . $this->prefix. "options-page " . $this->prefix . "wrap'>";
-
 			$current_tab = ( isset( $_GET['tab'] ) ) ? intval( $_GET['tab'] ) : 0 ;
 			$msg = '';
 			$noncename = $this->prefix . 'nonce';
@@ -256,7 +377,7 @@ if (!class_exists('LavaCorePlugin22')) :
 				
 			}
 
-			echo "<h2 class='" . $this->prefix. "option-page-title'>Plugin Options</h2>";
+			echo "<h2 class='" . $this->prefix . "option-page-title'>Plugin Options</h2>";
 
 			$this->do_tabs($current_tab);
 
@@ -306,10 +427,13 @@ if (!class_exists('LavaCorePlugin22')) :
 		 */
 		public function add_admin_page_to_menu(){
 			wp_enqueue_media();
-			$function = array($this, 'display_admin_page');
+			$function = array($this, 'display_admin_page2');
 			$admin_page = $this->static['options_page'];
-			add_submenu_page( $admin_page['parent_slug'], $admin_page['page_title'], $admin_page['menu_title'], $admin_page['capability'], $admin_page['menu_slug'], array($this, 'display_admin_page' ) );
+			add_submenu_page( $admin_page['parent_slug'], $admin_page['page_title'], $admin_page['menu_title'], $admin_page['capability'], $admin_page['menu_slug'], $function );
 		} 
+		// public function new_display_ad_option( $name ){
+		// 	echo $this->lava_options[$name]->option_field_html();
+		// }
 		public function display_admin_option( $name ){
 			// print_r($this);
 			$option = $this->dynamic[$name];

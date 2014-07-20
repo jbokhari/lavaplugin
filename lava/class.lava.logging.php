@@ -18,6 +18,7 @@ abstract class LavaLogging22 {
 	public function display_errors($echo = true, $verbose = false){
 		$count = count( $this->error );
 		$html  = "";
+		$html .= "<h3>Errors</h3>";
 		$html .= "<ul>";
 		foreach($this->error as $error){
 			$html .= "<li>$error</li>";

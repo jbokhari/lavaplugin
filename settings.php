@@ -8,36 +8,28 @@ $dynamic = array( //array of available options
 	::::::::::::::::EXTERNAL:::::::::::::::
 	**************************************/
 
-	"recentdev" => array(
-	    'name' => 'recentdev',
-		'label' => "Recent Developments",
-		"default" => null,
-		"required" => false,
-		"type" => "sortable",
-		"sortable" => array(
-			"post_type" => "post"
-			),
-		"in_menu" => true,
-		"class" => "",
-		"tab" => 0,
-		"in_js" => false
-
+	"sometextfield" => array(
+	    'name' => 'sometextfield',
+		'label' => "Some TextField",
+		"type" => "str",
+		"class" => "test-class",
+		"tab" => 0
 	),
-	"featuredpost" => array(
-	    'name' => 'featuredpost',
-		'label' => "Featured Posts",
-		"default" => null,
-		"required" => false,
-		"type" => "sortable",
-		"sortable" => array(
-			"post_type" => "post"
-			),
-		"in_menu" => true,
-		"class" => "",
-		"tab" => 0,
-		"in_js" => false
+	// "featuredpost" => array(
+	//     'name' => 'featuredpost',
+	// 	'label' => "Featured Posts",
+	// 	"default" => null,
+	// 	"required" => false,
+	// 	"type" => "sortable",
+	// 	"sortable" => array(
+	// 		"post_type" => "post"
+	// 		),
+	// 	"in_menu" => true,
+	// 	"class" => "",
+	// 	"tab" => 0,
+	// 	"in_js" => false
 
-	),
+	// ),
 	'testcheckbox' => array(
 	    'name' => 'testcheckbox',
 		'label' => "Test CheckBox",
@@ -48,6 +40,22 @@ $dynamic = array( //array of available options
 		"class" => "",
 		"tab" => 0,
 		"in_js" => false
+	),
+	array(
+		'name' => 'test_array_1',
+		'label' => 'Test Array 1',
+		'type' => "array",
+		'ui' => 'multiple',
+		'choices' => array(
+			array(
+			    "label" => "Choice 1",
+				"value" => "choice1"
+				),
+			array(
+			    "label" => "Choice 2",
+			    "value" => "choice2"
+	      		)
+		)
 	)
 	// 'credit3' => array(
 	// 	'label' => 'Empty Text Field',
