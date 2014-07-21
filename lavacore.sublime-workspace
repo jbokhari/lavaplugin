@@ -4,6 +4,34 @@
 		"selected_items":
 		[
 			[
+				"shortcode",
+				"shortcode_atts"
+			],
+			[
+				"call",
+				"call_user_func_array"
+			],
+			[
+				"lava",
+				"LavaPlugin"
+			],
+			[
+				"error",
+				"error_reporting"
+			],
+			[
+				"esc",
+				"esc_attr"
+			],
+			[
+				"sanitize_",
+				"sanitize_text_field"
+			],
+			[
+				"object",
+				"is_object"
+			],
+			[
 				"site_url",
 				"site_url"
 			],
@@ -15,29 +43,17 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "lava/class.lava.plugin.core.php",
-			"settings":
-			{
-				"buffer_size": 26366,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "plugin.php",
-			"settings":
-			{
-				"buffer_size": 4267,
-				"line_ending": "Windows"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 58.0,
+		"height": 150.0,
 		"selected_items":
 		[
+			[
+				"synjs",
+				"Set Syntax: JavaScript"
+			],
 			[
 				"instl",
 				"Package Control: Install Package"
@@ -67,7 +83,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 400.0
+		"width": 416.0
 	},
 	"console":
 	{
@@ -84,6 +100,27 @@
 	},
 	"file_history":
 	[
+		"/C/wamp/www/plugindev/wp-content/plugins/lava-core/lava/class.lava.plugin.options.php",
+		"/C/wamp/www/plugindev/wp-content/plugins/lava-core/lava/class.lava.plugin.core.php",
+		"/C/wamp/www/plugindev/wp-content/plugins/lava-core/lava/class.lava.plugin.option.sortable.php",
+		"/C/wamp/www/plugindev/wp-content/plugins/lava-core/settings.php",
+		"/C/wamp/www/plugindev/wp-content/plugins/lava-core/plugin.php",
+		"/C/wamp/www/plugindev/wp-content/plugins/lava-core/lava/class.lava.factory.php",
+		"/C/wamp/www/plugindev/wp-content/plugins/lava-core/lava/class.lava.plugin.option.array.php",
+		"/C/wamp/www/plugindev/wp-content/plugins/lava-core/lava/class.lava.plugin.option.int.php",
+		"/C/wamp/www/plugindev/wp-content/plugins/lava-core/library/js/admin.js",
+		"/C/wamp/www/plugindev/wp-content/plugins/lava-core/library/css/admin.css",
+		"/C/wamp/www/plugindev/wp-content/plugins/lava-core/library/js/jquery-ui-autocomplete.min.js",
+		"/C/wamp/www/plugindev/wp-content/plugins/lava-core/lava/class.lava.plugin.option.str.php",
+		"/C/wamp/www/plugindev/wp-content/plugins/lava-core/lava/class.lava.plugin.option.email.php",
+		"/C/wamp/www/plugindev/wp-content/plugins/lava-core/lava/class.lava.logging.php",
+		"/C/wamp/www/plugindev/wp-content/plugins/lava-core/lava/class.lava.plugin.option.textarea.php",
+		"/C/wamp/www/plugindev/wp-content/plugins/lava-core/lava/class.lava.plugin.option.bool.php",
+		"/C/wamp/www/plugindev/wp-content/plugins/lava-core/lava/class.lava.plugin.option.image.php",
+		"/C/wamp/www/plugindev/wp-content/plugins/lava-core/lava/class.lava.plugin.option.url.php",
+		"/C/wamp/www/plugindev/wp-content/plugins/lava-core/lavacore.sublime-project",
+		"/C/wamp/www/plugindev/wp-config.php",
+		"/C/wamp/www/plugindev/wp-content/plugins/lava-core/library/functions.php",
 		"/C/wamp/www/plugindev/wp-admin/setup-config.php",
 		"/C/wamp/www/plugindev/wp-content/plugins/jameel-s-dev-tools/inc/lava/settings.php",
 		"/C/wamp/www/plugindev/wp-content/plugins/jameel-s-dev-tools/plugin.php",
@@ -145,7 +182,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 108.0,
 		"where_history":
 		[
 			""
@@ -156,92 +193,134 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"avaFactor",
-			"lavafactory",
-			"avaOption",
 			"LavaFactory",
-			"new lava",
-			"validate",
-			"BUAZFeaturedPost",
-			"\\\"",
-			"option_field_html",
-			"ase 'str'",
-			"case ",
-			"prefix",
-			"type",
-			"settings.php",
-			"get_image_send_to_editor",
-			"image_send_to_editor",
-			"get_option",
-			"update_option",
-			".js",
-			"enqueue_admin_scripts",
-			"_e(",
-			"_e",
-			", 'modular'",
-			"latests news",
-			"Read All News >",
-			"#: ../.././header.php:364",
-			"CarCarreira",
-			"ç",
-			"Contato",
-			"Read",
-			"Servicios",
-			"company",
-			"contact",
-			",\\s?'modular'",
-			",\\s'modular'",
-			",\\s?'modular'",
-			", 'modular'",
-			".text-container",
-			"v=100",
-			"script",
-			"css",
-			"image-container",
-			"form-item",
-			"lighten($black, 80%)",
-			"column-container",
-			"border-rad",
-			".inline",
-			"label",
-			"position",
-			"label",
-			"section",
-			"h3",
-			"top",
-			"label",
-			" size=100%",
-			"mtrand",
-			"plainform",
-			"style=\"color:black;\"",
-			"style=\"",
-			"<br>",
-			"TEXTAREA",
-			"<div>",
-			"links-title",
-			"single-link-box",
-			"style=\"padding-right: 3em\"",
-			"style=\"width:15%\"",
-			"style=\"margin-top: -1em; color: #777777\"",
-			" style=\"width:15%; padding-bottom: 2em;\"",
-			"<hr>",
-			"b>",
-			"<br>",
-			"tr>",
-			"<tr",
-			"tr>",
-			"td>",
-			"<td",
-			"row",
-			"columns",
+			"lavafactor",
+			"true",
+			"set_value",
+			"save",
+			"$value",
+			"value",
+			"name",
+			"__construct($prefix, $options);",
+			"$option['",
+			"tab",
+			"$required",
+			"invalid",
+			"classes",
 			"class",
-			"!",
-			"styles",
-			"require",
-			"h1",
-			"!",
-			"submit_cancel",
-			"cancel"
+			"adminjs",
+			"get_option_label",
+			"get_option_label_html",
+			"validate",
+			"useFrontend",
+			"is_required",
+			"//bad!",
+			"min",
+			"generate_minimum_value_html",
+			"get_value",
+			"version",
+			"$options['rules']['",
+			"min",
+			"generate_step_value_html",
+			"max",
+			"rules",
+			"min",
+			"dylnamic",
+			"debug_info(",
+			"save_admin",
+			"update_admin_options",
+			"pdate_admin_options",
+			"update_admin_options2",
+			"display_admin_page",
+			"display_admin_page2",
+			"default",
+			"checked_html",
+			"selected_html",
+			"validate",
+			"set_value",
+			"_bool",
+			"print_r",
+			"required",
+			"protected function is_required",
+			"is_required",
+			"protected",
+			"$$id",
+			"$name",
+			"name",
+			"$name",
+			"name",
+			"update_admin_options2",
+			"save_admin",
+			"save_post",
+			"set_value",
+			"LavaOption22",
+			"debug",
+			"set_valu",
+			"current_tab",
+			"save_post",
+			"update_admin_options2",
+			"in_options2",
+			"update_admin_options",
+			"update_admin_options2",
+			"update_admin_options",
+			"save_admin",
+			"savepost",
+			"save_post",
+			"save_admin",
+			"is_required",
+			"set_value",
+			"save_",
+			"newValue",
+			"$newvalue =",
+			"_bool",
+			"get_value",
+			"\"\";",
+			"get_option_field_html",
+			"option_field_html",
+			"option_label_html",
+			"option_field",
+			"\"",
+			"LavaOption22",
+			"save",
+			"save_field",
+			"option_field_html",
+			"option_field_html\noption_field_html",
+			"option_field_html",
+			"generate_option_fields",
+			"display_admin_page",
+			"$noncename",
+			"nonceaction",
+			"require_html",
+			"LavaOption22",
+			"require_html",
+			"display_admin",
+			"lava_options",
+			"newDynamic",
+			"dynamic",
+			"display_admin_page",
+			"display_admin_page2",
+			"generate_option_fields",
+			"_fields",
+			"generate_option_fields",
+			"generate_page_fields",
+			"new_display_ad_option",
+			"(){\n",
+			"plugin_tabs",
+			"sometextfield",
+			"recentdev",
+			"display_admin_option",
+			"class",
+			"$this->lava_options",
+			"options",
+			"option",
+			"dynamic",
+			"protected",
+			"new",
+			"new lava",
+			"LavaLogging22",
+			"type",
+			"\"",
+			"get_value"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -260,69 +339,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "lava/class.lava.plugin.core.php",
-					"settings":
-					{
-						"buffer_size": 26366,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								22328,
-								22328
-							]
-						],
-						"settings":
-						{
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 60336.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "plugin.php",
-					"settings":
-					{
-						"buffer_size": 4267,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								37,
-								37
-							]
-						],
-						"settings":
-						{
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 5946.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -371,6 +389,74 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"settings",
+				"settings.php"
+			],
+			[
+				"core",
+				"lava/class.lava.plugin.core.php"
+			],
+			[
+				"plugin",
+				"plugin.php"
+			],
+			[
+				"option",
+				"lava/class.lava.plugin.options.php"
+			],
+			[
+				"sortable",
+				"lava/class.lava.plugin.option.sortable.php"
+			],
+			[
+				"options",
+				"lava/class.lava.plugin.options.php"
+			],
+			[
+				"settigs",
+				"settings.php"
+			],
+			[
+				"array",
+				"lava/class.lava.plugin.option.array.php"
+			],
+			[
+				"pluginoption",
+				"lava/class.lava.plugin.options.php"
+			],
+			[
+				"adminjs",
+				"library/js/admin.js"
+			],
+			[
+				"lavacore",
+				"lava/class.lava.plugin.core.php"
+			],
+			[
+				"admin.js",
+				"library/js/admin.js"
+			],
+			[
+				"admin",
+				"library/css/admin.css"
+			],
+			[
+				"str",
+				"lava/class.lava.plugin.option.str.php"
+			],
+			[
+				"css",
+				"library/css/admin.css"
+			],
+			[
+				"int",
+				"lava/class.lava.plugin.option.int.php"
+			],
+			[
+				"email",
+				"lava/class.lava.plugin.option.email.php"
+			],
 			[
 				"setting",
 				"inc/lava/settings.php"

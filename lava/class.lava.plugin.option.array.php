@@ -1,7 +1,16 @@
 <?php
+/**
+ * Array option. Does not neccessarily store an array but includes a number of choices. These can be arranged with various ui
+ * Current ui options: multiple, select, checkboxes, radio
+ * @package Lava
+ * @version 2.2
+ * @author Jameel Bokhari
+ * @license GPL2
+ * Last updated 7/20/2014
+ */
 final class LavaOption_array extends LavaOption22 {
-	function __construct($prefix, array $options){
-		parent::__construct($prefix, $options);
+	function __construct($prefix, array $options, $no){
+		parent::__construct($prefix, $options, $no);
 		$this->array_init($options);
 	}
 	public function array_init($options){

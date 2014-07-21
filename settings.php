@@ -13,23 +13,24 @@ $dynamic = array( //array of available options
 		'label' => "Some TextField",
 		"type" => "str",
 		"class" => "test-class",
-		"tab" => 0
+		"tab" => 0,
+		"required" => true
 	),
-	// "featuredpost" => array(
-	//     'name' => 'featuredpost',
-	// 	'label' => "Featured Posts",
-	// 	"default" => null,
-	// 	"required" => false,
-	// 	"type" => "sortable",
-	// 	"sortable" => array(
-	// 		"post_type" => "post"
-	// 		),
-	// 	"in_menu" => true,
-	// 	"class" => "",
-	// 	"tab" => 0,
-	// 	"in_js" => false
+	"featuredpost" => array(
+	    'name' => 'sortable',
+		'label' => "Sortable Field",
+		"default" => null,
+		"required" => false,
+		"type" => "sortable",
+		"sortable" => array(
+			"post_type" => "post"
+			),
+		"in_menu" => true,
+		"class" => "",
+		"tab" => 0,
+		"in_js" => false
 
-	// ),
+	),
 	'testcheckbox' => array(
 	    'name' => 'testcheckbox',
 		'label' => "Test CheckBox",
@@ -109,7 +110,12 @@ $dynamic = array( //array of available options
 	      "name" => "number_field",
 	      "label" => "Number Field Test",
 	      "type" => "int",
-	      "rules" => array()
+	      "rules" => array("max" => 200)
+      ),
+	array(
+	      "name" => "email",
+	      "label" => "Email Field",
+	      "type" => "email"
       )
 	// 'credit3' => array(
 	// 	'label' => 'Empty Text Field',

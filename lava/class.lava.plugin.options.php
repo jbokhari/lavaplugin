@@ -21,7 +21,8 @@ abstract class LavaOption22 extends LavaLogging22 {
 	public $classes = array();
 	public $in_js = false;
 	public $tab = 0;
-	function __construct($prefix, array $options){
+	protected $invalid = true;
+	function __construct($prefix, array $options, $no = 0){
 		// print_r($options);
 		$this->_log("Instantiated");
 		$this->prefix = $prefix;
@@ -34,15 +35,33 @@ abstract class LavaOption22 extends LavaLogging22 {
 			$this->label = $options['label'];
 		} else {
 			$this->_error("<code>Label</code> field not set for option {$this->name}. The label field and name are required.");
-		}
+		} 
+		$this->classes[] = "field-" . $no;
+		$this->fieldnumber = $no;
 		$this->id = $options['id'] = $this->prefix . $options['name'];
 		$this->default_optionals($options);
 	}
 	public function get_option_label_html(){
-		$this->_log("Run get_option_label_html()");
 		$html = "";
-		$html .= "<label for='{$this->id}'>{$this->label}</label>";
+		$required = $this->required ? "*" : "";
+		var_dump($this->required);
+		$html .= "<label for='{$this->id}'>{$this->label}{$required}</label>";
 		return $html;
+	}
+	public function get_form_js(){
+		return "";
+	}
+	final public function get_option_header_html(){
+		return "<div class='option-block field-{$this->fieldnumber}'>";
+	}
+	final public function get_option_footer_html(){
+		$return = $this->get_form_js();
+		$return = "<div style='clear:both;'></div>";
+		$return = "</div>";
+		return $return;
+	}
+	public function do_action(){
+
 	}
 	final private function delete_value(){
 		return delete_option( $this->id );
@@ -65,6 +84,8 @@ abstract class LavaOption22 extends LavaLogging22 {
 			$this->in_js = $options['in_js'];
 		if ( isset( $options['tab'] ) )
 			$this->tab = $options['tab'];
+		if ( isset( $options['required'] ) )
+			$this->required = $options['required'];
 	}
 	public function get_value($default = null){
 		if ($default === null)
@@ -76,10 +97,18 @@ abstract class LavaOption22 extends LavaLogging22 {
 	public function is_required(){
 		if ($this->required){
 			$this->_error("set_value() could not be performed on {$this->name} because it is required and the value was empty after validation.");
+			$this->invalidate();
 			return true;
 		} else {
 			return false;
 		}
+	}
+	protected function invalidate($msg = ""){
+		$this->invalid = true;
+		if ($msg != ""){
+			$this->error_tooltip = $msg;
+		}
+		$this->classes[] = 'invalid';
 	}
 	public function set_value($newValue = ""){
 		$this->_log("set_value() was run.");

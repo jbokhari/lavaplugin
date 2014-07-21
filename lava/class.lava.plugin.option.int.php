@@ -3,8 +3,8 @@ final class LavaOption_int extends LavaOption22 {
 
 	public $rules = array();
 
-	public function __construct($prefix, array $options){
-		parent::__construct($prefix, $options);
+	public function __construct($prefix, array $options, $no){
+		parent::__construct($prefix, $options, $no);
 		$this->int_init($options);
 	}
 	public function int_init($options){
@@ -54,6 +54,25 @@ final class LavaOption_int extends LavaOption22 {
 		return "<input id='{$id}' class='{$classes}' {$required} type='number' $max $min $step name='{$id}' value='{$value}' />";
 	}
 	public function validate($newValue = ""){
-		return sanitize_email( $newValue );
+		$value = intval( $newValue );
+		if (!empty($this->rules)){
+			if ( isset($this->rules['min'] ) ){
+				if ( $newValue < $this->rules['min'] ){
+					$this->invalidate();
+					return $this->get_value();
+				}
+			}
+			if ( isset($this->rules['max'] ) ){
+				if ( $newValue > $this->rules['max'] ){
+					$this->invalidate();
+					return $this->get_value();
+				}
+			}
+			if ( isset($this->rules['step'] ) ){
+				// is there a need to enforce step?
+				// maybe it shouldn't be called a rule at all?
+			}
+		}
+		return $value;
 	}
 }

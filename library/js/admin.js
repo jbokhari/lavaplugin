@@ -41,4 +41,7 @@ jQuery(document).ready(function($) {
     $('.add_media').on('click', function() {
         _custom_media = false;
     });
+    $('.invalid').on("hover", function(){
+        $(this).removeClass("invalid");
+    })
 });

@@ -51,11 +51,12 @@ class LavaPlugin extends LavaCorePlugin22 {
 	protected $templates;
 	public function __construct(){
 		parent::__construct();
-		$this->init();
 	}
 	public function init(){
 		$this->useFrontendCss = true;
 		$this->useFrontendJs = true;
+		$this->useAdminCss = true;
+		$this->useAdminJs = true;
 		$plugin = plugin_basename(__FILE__); 
 		add_filter("plugin_action_links_$plugin", array($this, 'add_settings_page') );
 	}
@@ -104,13 +105,29 @@ class LavaPlugin extends LavaCorePlugin22 {
 	  array_unshift($links, $settings_link); 
 	  return $links; 
 	}
-	 
-	
-
-
 }
-// $LavaPlugin = new LavaPlugin();
 $LavaPlugin = LavaPlugin::get_instance();
+add_shortcode('test_sortable', 'test_sortable_query' );
+function test_sortable_query($atts, $content = null){
+	extract( shortcode_atts(
+    	array('id' => '')
+	, $atts) );
+	$LavaPlugin = LavaPlugin::get_instance();
+	$order = $LavaPlugin->lava_options[$id]->get_value();
+	$order = explode(',', $order);
+	/**
+		 * The WordPress Query class.
+		 * @link http://codex.wordpress.org/Function_Reference/WP_Query
+		 *
+		 */
+		$args = array(
+			"post__in" => $order
+		);
+	
+	$query = new WP_Query( $args );
+	
+	return print_r($order, true);
+}
 // echo "<pre>";
 // print_r($LavaPlugin);
 // echo "</pre>";
