@@ -54,19 +54,26 @@ final class LavaOption_array extends LavaOption22 {
 	public function get_raw($default = null){
 		return get_option($this->id);
 	}
-	public function get_value($default = null){
-		if ($default === null)
-			$default = $this->default;
-		if( ! $this->value){
-			$value = get_option($this->id, $default);
-			if ($value)
-				$this->value = unserialize( $value );
-			else
-				$this->value = array();
+	// public function get_value($default = null){
+	// 	if ($default === null)
+	// 		$default = $this->default;
+	// 	if( ! $this->value){
+	// 		$value = get_option($this->id, $default);
+	// 		if ($value)
+	// 			$this->value = unserialize( $value );
+	// 		else
+	// 			$this->value = array();
 			
-		}
+	// 	}
 
-		return $this->value;
+	// 	return $this->value;
+	// }
+	public function output_filter($value){
+		if ($value){
+			return unserialize($value);
+		} else {
+			return array();
+		}
 	}
 	public function get_option_field_html(){
 		$value = $this->get_value();

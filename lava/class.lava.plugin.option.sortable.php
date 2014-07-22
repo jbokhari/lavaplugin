@@ -62,7 +62,6 @@ final class LavaOption_sortable extends LavaOption22 {
 		$fieldhtml .= '<div id="sortable-order-' . $this->fieldnumber . '">';
 		$fieldhtml .= '<input type="hidden" name="'.$this->id.'" value="'.$value.'">';
 		$fieldhtml .= '</div>';
-		echo $this->get_value();
 		ob_start();
 		?>
 		<script>

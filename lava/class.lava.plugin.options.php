@@ -44,7 +44,6 @@ abstract class LavaOption22 extends LavaLogging22 {
 	public function get_option_label_html(){
 		$html = "";
 		$required = $this->required ? "*" : "";
-		var_dump($this->required);
 		$html .= "<label for='{$this->id}'>{$this->label}{$required}</label>";
 		return $html;
 	}
@@ -87,12 +86,22 @@ abstract class LavaOption22 extends LavaLogging22 {
 		if ( isset( $options['required'] ) )
 			$this->required = $options['required'];
 	}
-	public function get_value($default = null){
+	final public function get_value($default = null){
 		if ($default === null)
 			$default = $this->default;
-		if( ! $this->value)
-			$this->value = get_option($this->id, $default);
+		if( ! $this->value){
+			$value = get_option($this->id, $default);
+			$this->value = $this->output_filter($value);
+		}
 		return $this->value;
+	}
+	/**
+	 * Override output_filter() rather than rewrite get_value()
+	 * @param type $input 
+	 * @return type
+	 */
+	public function output_filter($input){
+		return $input;
 	}
 	public function is_required(){
 		if ($this->required){

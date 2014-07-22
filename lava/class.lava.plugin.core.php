@@ -24,6 +24,7 @@ if (!class_exists('LavaCorePlugin22')) :
 	require_once "class.lava.plugin.option.image.php";
 	require_once "class.lava.plugin.option.email.php";
 	require_once "class.lava.plugin.option.bool.php";
+	require_once "class.lava.plugin.option.color.php";
 	class LavaCorePlugin22 extends LavaLogging22 {
 		public $optionspage = array();
 		public $options = array();

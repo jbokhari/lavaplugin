@@ -116,17 +116,22 @@ $dynamic = array( //array of available options
 	      "name" => "email",
 	      "label" => "Email Field",
 	      "type" => "email"
+      ),
+	array(
+	      "name" => "textarea",
+	      "label" => "Text Area",
+	      "type" => "textarea"
+      ),
+	array(
+	      "name" => "image",
+	      "label" => "Image",
+	      "type" => "image"
+	      ),
+	array(
+	      "name" => "color",
+	      "label" => "A Color",
+	      "type" => "color"
       )
-	// 'credit3' => array(
-	// 	'label' => 'Empty Text Field',
-	// 	'default' => false,
-	// 	'required' => false,
-	// 	'type' => 'str',
-	// 	'in_menu' => true,
-	// 	'class' => '',
-	// 	'tab' => 0,
-	// 	'in_js' => false
-	// )
 );
 
 $static = array(
