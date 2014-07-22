@@ -8,7 +8,7 @@ final class LavaOption_color extends LavaOption22 {
 		$name = $this->name;
 		$id = $this->id;
 		$html = "";
-		$html .= "<input class='lava-color-chooser'>;
+		$html .= "<input class='lava-color-chooser'>";
 		return $html;
 	}
 	public function validate($newValue = ""){
