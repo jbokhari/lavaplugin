@@ -11,7 +11,7 @@ final class LavaOption_color extends LavaOption22 {
     );
 	public function init_tasks($options){
 		add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts_and_styles' ) );
-		$this->ui = isset($options['ui']) ? $options['ui'] : "rgba";
+		$this->ui = isset($options['ui']) ? $options['ui'] : "hex";
 		if ($this->ui == "rgba")
 			$this->add_class("rgbacolorpicker");
 		else if ($this->ui == "hex")
