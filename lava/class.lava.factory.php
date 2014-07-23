@@ -2,7 +2,6 @@
 /**
  * Class LavaFactory creates a LavaOption based on the type specified
  * @package Lava
- * @version 2.2
  * @author Jameel Bokhari
  * @license GPL22
  */

@@ -38,7 +38,11 @@ if (!class_exists('LavaCorePlugin22')) :
 		public $newDynamic;
 		public $tabs;
 		public $name;
+		public $dir;
+		public $jsdir;
+		public $cssdir;
 		public $admin_message = "";
+		private static $queued_si_scripts = array();
 		private static $fieldnumber = 0;
 
 		protected $option_prefix;
@@ -46,9 +50,9 @@ if (!class_exists('LavaCorePlugin22')) :
 
 		public function __construct($options = null, $prefix = 'lava_'){
 			$this->set_options($options);
-			$dir = plugin_dir_url( __FILE__ );
-			$this->cssdir = $dir . '../library/css/';
-			$this->jsdir = $dir . '../library/js/';
+			$this->dir = plugin_dir_url( __FILE__ );
+			$this->cssdir = $this->dir . '../library/css/';
+			$this->jsdir = $this->dir . '../library/js/';
 
 			register_activation_hook( __FILE__, array($this, 'plugin_activate') );
 			register_deactivation_hook( __FILE__, 'plugin_deactivate' );
@@ -57,6 +61,15 @@ if (!class_exists('LavaCorePlugin22')) :
 			$this->enqueue_scripts();
 			add_action( 'admin_head', array($this, "save_admin"));
 			$this->init();
+		}
+		final static function get_dir(){
+			return plugin_dir_url( __FILE__ );
+		}
+		final static function get_js_dir(){
+			return plugin_dir_url( __FILE__ ) . "../library/js/";
+		}
+		final static function get_css_dir(){
+			return plugin_dir_url( __FILE__ ) . "../library/css/";
 		}
 		public function enqueue_scripts(){
 			if( $this->get_cache( 'plugin_activated', false ) ){
@@ -311,6 +324,7 @@ if (!class_exists('LavaCorePlugin22')) :
 				wp_nonce_field( $nonceaction, $noncename );
 				echo "<button class='button button-primary {$this->prefix}plugin-save-btn' type='submit'>Save Options</button>";
 			}
+			$this->single_instance_footer_scripts();
 			$this->debug_info();
 			echo "</form>";
 			echo "</div><!-- EOF WRAP -->";
@@ -404,6 +418,30 @@ if (!class_exists('LavaCorePlugin22')) :
 			} else {
 				return "LAVAOBJ";
 			}
+		}
+		static function set_si_footer_scripts($script){
+			self::$queued_si_scripts[] = $script;
+		}
+		private function has_single_instance_footer_scripts(){
+			if ( count(self::$queued_si_scripts) < 1)
+				return false;
+			else return true;
+		}
+		private function get_single_instance_footer_scripts(){ 
+			foreach (self::$queued_si_scripts as $line){
+				$scripts = $line . PHP_EOL;
+			}
+			return $scripts;
+		}
+		private function single_instance_footer_scripts(){
+			if ( ! $this->has_single_instance_footer_scripts())
+				return;
+			echo "<script>" . PHP_EOL;
+			echo "jQuery(document).ready(function($){" . PHP_EOL;
+			echo "console.log('queued scripts');" . PHP_EOL;
+			echo $this->get_single_instance_footer_scripts();
+			echo "});" . PHP_EOL;
+			echo "</script>";
 		}
 		public function admin_enqueue_scripts_and_styles(){
 			$version = $this->get_script_version();

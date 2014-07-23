@@ -1,16 +1,21 @@
 <?php
 final class LavaOption_sortable extends LavaOption22 {
-	public function __construct($prefix, $options, $no){
-		parent::__construct($prefix, $options, $no);
-		$this->sortable_init($options);
-	}
-	public function sortable_init($options){
+	public function init_tasks($options){
 		if ( isset( $options['sortable']) ){
 			$this->sortable = $options['sortable'];
 		}
+		$this->add_class("lava-sortable");
+	}
+	public function get_single_instance_footer_scripts(){
+		if ( $this->ui == "rgba" && empty(self::$single_instance_scripts[$this->ui]) ){
+			self::$single_instance_scripts[$this->ui] = true;
+			return "jQuery('input.rgbacolorpicker').rgbacolorpicker();";
+		}
+		return false; //default return false
 	}
 	public function get_option_field_html(){
 		$fieldhtml = '';
+		$classes = $this->input_classes();
 		if ( empty( $this->sortable ) ){
 			$this->_error("Error creating sortable field, setting missing sortable option for {$this->name}");
 			return 'Error creating sortable field, setting missing sortable option.';
@@ -31,7 +36,7 @@ final class LavaOption_sortable extends LavaOption22 {
 
 		$query = new WP_Query( $args );
 
-		$fieldhtml .= "<ul id='sortable-{$this->fieldnumber}' class='sortable'>";
+		$fieldhtml .= "<ul id='sortable-{$this->fieldnumber}' class='sortable {$classes}'>";
 		$pc = 0; // post count for array indexis
 		if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post();
 		// $fieldhtml .= '<li class="post-' . get_the_id() . '">' . get_the_title() . '</li>';
@@ -66,14 +71,17 @@ final class LavaOption_sortable extends LavaOption22 {
 		?>
 		<script>
 			jQuery(document).ready(function($){
-				var sortable = $('#sortable-<?php echo $this->fieldnumber ?>').sortable({
-					stop: function(){
-						var $self = $(this); // <ul class=sortable>
-						updateOrder();
-					},
-					containment: "parent"
+				var sortables = $('.lava-sortable');
+				sortables.each(function(i){
+					$(this).sortable({
+						stop: function(){
+							var $self = $(this); // <ul class=sortable>
+							updateOrder($self);
+						},
+						containment: "parent"
+					});
+					
 				});
-				console.log(sortable);
 				$(".exout").on("click", function(){
 					removeLi(this);
 				});
@@ -84,7 +92,8 @@ final class LavaOption_sortable extends LavaOption22 {
 					parent.fadeOut({
 						complete: function(){
 							$(this).remove();
-							updateOrder();
+							var sortable = parent.parent();
+							updateOrder(sortable);
 						} 
 					});
 				}

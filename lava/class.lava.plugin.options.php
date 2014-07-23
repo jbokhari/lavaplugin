@@ -40,7 +40,12 @@ abstract class LavaOption22 extends LavaLogging22 {
 		$this->fieldnumber = $no;
 		$this->id = $options['id'] = $this->prefix . $options['name'];
 		$this->default_optionals($options);
+		$this->init_tasks($options);
+		$script = $this->get_single_instance_footer_scripts();
+		if ($script)
+			LavaCorePlugin22::set_si_footer_scripts($script);
 	}
+	protected function init_tasks($options){}
 	public function get_option_label_html(){
 		$html = "";
 		$required = $this->required ? "*" : "";
@@ -59,9 +64,11 @@ abstract class LavaOption22 extends LavaLogging22 {
 		$return = "</div>";
 		return $return;
 	}
-	public function do_action(){
-
-	}
+	/**
+	 * Used by LavaPlugin class to queue JavaScript to be appended to the options page when this option is loaded. These scripts are defined in this function when a script is needed to be run only one time for no matter how many options of this type are created.
+	 * @return (string)
+	 */
+	public function get_single_instance_footer_scripts(){}
 	final private function delete_value(){
 		return delete_option( $this->id );
 	}
@@ -103,6 +110,9 @@ abstract class LavaOption22 extends LavaLogging22 {
 	public function output_filter($input){
 		return $input;
 	}
+	public function add_class($class){
+		$this->classes[] = $class;
+	}
 	public function is_required(){
 		if ($this->required){
 			$this->_error("set_value() could not be performed on {$this->name} because it is required and the value was empty after validation.");
@@ -117,7 +127,7 @@ abstract class LavaOption22 extends LavaLogging22 {
 		if ($msg != ""){
 			$this->error_tooltip = $msg;
 		}
-		$this->classes[] = 'invalid';
+		$this->add_class('invalid');
 	}
 	public function set_value($newValue = ""){
 		$this->_log("set_value() was run.");
