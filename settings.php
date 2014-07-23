@@ -131,6 +131,23 @@ $dynamic = array( //array of available options
 	      "name" => "color",
 	      "label" => "A Color",
 	      "type" => "color"
+      ),
+	array(
+		"name" => "Repeater",
+		"label" => "Repeater",
+		"type" => "repeater",
+		"fields" => array(
+			array(
+				"name" => "subfield1",
+				"label" => "Sub 1",
+				"type" => "str"	
+			),
+			array(
+			      "name" => "subfield2",
+				"label" => "Sub 2",
+				"type" => "str"	
+			)
+		)
       )
 );
 
