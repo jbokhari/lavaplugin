@@ -101,6 +101,14 @@
 .rc_options-page .invalid {
 	border-color: red;
 }
+
+.lava-logging-errors {
+	background: #fee;
+	border-left: 3px solid #e44;
+	margin: 10px 0;
+	padding: 10px;
+	box-shadow: 2px 2px rgba(0, 0, 0, 0.3);
+}
 /*! jQuery UI - v1.11.0 - 2014-07-15
 * http://jqueryui.com
 * Includes: core.css, autocomplete.css, menu.css

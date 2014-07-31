@@ -10,7 +10,7 @@ abstract class LavaLogging22 {
 	public $error = array();
 	public $log = array();
 	public function display_logs( $echo = true, $verbose = false ){
-		$html  = "<h3>Logs:</h3>";
+		$html  = "<h3>Logs [$this->name]:</h3>";
 		$html .= "<ul>";
 		foreach($this->log as $log){
 			$html .= "<li>$log</li>";
@@ -24,13 +24,17 @@ abstract class LavaLogging22 {
 	}
 	public function display_errors($echo = true, $verbose = false){
 		$count = count( $this->error );
+		if ($count < 1)
+			return;
 		$html  = "";
-		$html .= "<h3>Errors</h3>";
+		$html .= "<div class='lava-logging-errors'>";
+		$html .= "<h3>Errors [$this->id]:</h3>";
 		$html .= "<ul>";
 		foreach($this->error as $error){
 			$html .= "<li>$error</li>";
 		}
 		$html .= "</ul>";
+		$html .= "</div>";
 		if ($echo == true){
 			echo $html;
 		} else {
