@@ -140,12 +140,17 @@ $dynamic = array( //array of available options
 			array(
 				"name" => "subfield1",
 				"label" => "Sub 1",
-				"type" => "str"	
+				"type" => "str"
 			),
 			array(
-			      "name" => "subfield2",
+			    "name" => "subfield2",
 				"label" => "Sub 2",
-				"type" => "str"	
+				"type" => "bool"	
+			),
+			array(
+			    "name" => "subfield3",
+				"label" => "Sub 3",
+				"type" => "image"	
 			)
 		)
       )
