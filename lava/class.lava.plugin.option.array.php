@@ -45,7 +45,11 @@ final class LavaOption_array extends LavaOption22 {
 		}
 	}
 	public function get_choice_slug($label){
-		return esc_attr( $label );
+		$return = $label;
+		$return = strtolower( $return );
+		$return = str_replace(" ", "_", $return);
+		$return = esc_attr( $return );
+		return $return;
 	}
 	public function get_raw($default = null){
 		return get_option($this->id);
