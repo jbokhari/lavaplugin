@@ -38,7 +38,11 @@ abstract class LavaOption22 extends LavaLogging22 {
 		} 
 		$this->classes[] = "field-" . $no;
 		$this->fieldnumber = $no;
-		$this->id = $options['id'] = $this->prefix . $options['name'];
+		//for repeater fields
+		if ( isset($options['id'] ) && !empty( $options['id'] ) )
+			$this->id = $options['id'];
+		else
+			$this->id = $options['id'] = $this->prefix . $options['name'];
 		$this->default_optionals($options);
 		$this->init_tasks($options);
 		$script = $this->get_single_instance_footer_scripts();
@@ -56,7 +60,7 @@ abstract class LavaOption22 extends LavaLogging22 {
 		return "";
 	}
 	final public function get_option_header_html(){
-		return "<div class='option-block field-{$this->fieldnumber}'>";
+		return "<div id='{$this->id}-container' class='option-block field-{$this->fieldnumber}'>";
 	}
 	final public function get_option_footer_html(){
 		$return = $this->get_form_js();
