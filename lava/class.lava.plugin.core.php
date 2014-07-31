@@ -331,18 +331,18 @@ if (!class_exists('LavaCorePlugin22')) :
 			echo "</div><!-- EOF WRAP -->";
 		}
 		public function debug_info(){
-			return false;
+			// return false;
 			//Used to do all this...
 			// if( $this->is_debug_mode() ){ // no longer defined
 			// 	// print_r($this->cache);
-			// 	$this->display_errors();
+				$this->display_errors();
 			// 	$this->display_logs();
-			// 	foreach($this->lava_options as $option){
+				foreach($this->lava_options as $option){
 			// 		echo $option->label;
 			// 		$option->display_logs();
-			// 		$option->display_errors();
+					$option->display_errors();
 			// 	}
-			// }
+			}
 		}
 		public function generate_option_fields($tab){
 			foreach ($this->lava_options as $option) {
