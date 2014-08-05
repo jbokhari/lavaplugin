@@ -24,14 +24,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-/**
- * Dear future developers (poor souls):
- * To add or edit options and fields see lava/settings.php where the values are used to create fields in the settings page. The LavaCorePlugin class sets up all the jibba-jabba to create an options page and store them in the data base as post meta.
- * Functionality for this plugin is aliased through rc_related_content(), which is definied in library/functions.php
- * The aformentioned function uses the file related-content.php, which is where the bulk of the specific-to-this-plugin functionallity can be found.
- * Also noteworthy, this plugin utilizes three other plugins (although has fallbacks if they are not installed). These plugins include Advanced Custom Fields v 4.3.2, Repeater Field v 1.1.1 and wp-days-ago v 3.0.3. These are the current versions, it should also work with future version or fallback to secodary options but don't quote me on that.
- * Last Updated July 15, 2014 
- */
+
 define("ECT_RELATED_CONTENT_PATH", dirname(__FILE__));
 define("ECT_RELATED_CONTENT_URL", plugin_dir_url( __FILE__ ) );
 require_once('lava/class.lava.plugin.core.php');

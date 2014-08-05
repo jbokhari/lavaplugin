@@ -106,22 +106,14 @@ if (!class_exists('LavaCorePlugin22')) :
 			return $option;
 		}
 
-		public function set_options($options = null){
-			//settings and options
-			//settings are for plugin, ie tabs menus etc
-			//options are for what user chooses, plugin settings
-			if ($options === null){
-				$path = '';
-				require_once( plugin_dir_path(__FILE__) . '/../settings.php' );
-				$this->static = $static;
-				$this->dynamic = $dynamic;
-				foreach( $this->dynamic as $option ) {
-					$name = $option['name'];
-					$this->lava_options[$name] = LavaFactory::create($this->prefix, $option );
-				}
-			} else {
-				$this->static = $options['static'];
-				$this->dynamic = $options['dynamic'];
+		public function set_options($options){
+			$path = '';
+			require_once( plugin_dir_path(__FILE__) . '/../settings.php' );
+			$this->static = $static;
+			$this->dynamic = $dynamic;
+			foreach( $this->dynamic as $option ) {
+				$name = $option['name'];
+				$this->lava_options[$name] = LavaFactory::create($this->prefix, $option );
 			}
 		}
 		public function plugin_activate(){
@@ -298,6 +290,7 @@ if (!class_exists('LavaCorePlugin22')) :
 		 * @return void
 		 */
 		public function display_admin_page(){
+			echo get_option("rc_sometextfield");
 			echo "<div class='wrap " . $this->prefix . "options-page " . $this->prefix . "wrap'>";
 			// $msg = $this->save_admin();
 			$current_tab = ( isset( $_GET['tab'] ) ) ? intval( $_GET['tab'] ) : 0 ;
@@ -424,25 +417,29 @@ if (!class_exists('LavaCorePlugin22')) :
 			self::$queued_si_scripts[] = $script;
 		}
 		private function has_single_instance_footer_scripts(){
+			print_r(self::$queued_si_scripts);
 			if ( count(self::$queued_si_scripts) < 1)
 				return false;
 			else return true;
 		}
 		private function get_single_instance_footer_scripts(){ 
-			foreach (self::$queued_si_scripts as $line){
-				$scripts = $line . PHP_EOL;
+
+			$base = $this->dir . "/options/js/";
+			foreach (self::$queued_si_scripts as $file){
+				$scripts = "<script src='{$base}{$file}'></script>" . PHP_EOL;
 			}
 			return $scripts;
 		}
 		private function single_instance_footer_scripts(){
+			echo "<!-- This is not typhoon -->";
 			if ( ! $this->has_single_instance_footer_scripts())
 				return;
-			echo "<script>" . PHP_EOL;
-			echo "jQuery(document).ready(function($){" . PHP_EOL;
-			echo "console.log('queued scripts');" . PHP_EOL;
+			// echo "<script>" . PHP_EOL;
+			// echo "jQuery(document).ready(function($){" . PHP_EOL;
+			// echo "console.log('queued scripts');" . PHP_EOL;
 			echo $this->get_single_instance_footer_scripts();
-			echo "});" . PHP_EOL;
-			echo "</script>";
+			// echo "});" . PHP_EOL;
+			// echo "</script>";
 		}
 		public function admin_enqueue_scripts_and_styles(){
 			$version = $this->get_script_version();

@@ -20,4 +20,8 @@ final class LavaOption_str extends LavaOption22 {
 		/* later we can add better validation here like string length, zip code validation and stuff like that */
 		return sanitize_text_field( $newValue );
 	}
+	public function output_filter($value){
+		$newvalue = stripcslashes($value);
+		return $newvalue;
+	}
 }

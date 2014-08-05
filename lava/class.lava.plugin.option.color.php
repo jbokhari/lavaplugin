@@ -5,7 +5,6 @@ final class LavaOption_color extends LavaOption22 {
         array( "jscolor", "libs/jscolor/jscolor.js", array() ),
         array( "rgbapicker", "libs/colorpickerrgba/rgbacolorpicker.min.js", array("jquery") )
 	);
-	public static $single_instance_scripts = array();
 	public $styles = array(
 		array("rgbapicker", "libs/colorpickerrgba/rgbacolorpicker.css", array())
     );
@@ -16,11 +15,27 @@ final class LavaOption_color extends LavaOption22 {
 			$this->add_class("rgbacolorpicker");
 		else if ($this->ui == "hex")
 			$this->add_class("lava-color-chooser");
+		else if ($this->ui == "wp")
+			$this->add_class("wp-colorpicker-ui");
 	}
+	/**
+	 * Registers script. Tracks whether script was registered
+	 * or not via the $single_instance_scripts static var
+	 * Returns the script's file name
+	 * @return string OR boolean false
+	 */
 	public function get_single_instance_footer_scripts(){
-		if ( $this->ui == "rgba" && empty(self::$single_instance_scripts[$this->ui]) ){
-			self::$single_instance_scripts[$this->ui] = true;
-			return "jQuery('input.rgbacolorpicker').rgbacolorpicker();";
+		if ( ! empty( self::$single_instance_scripts[$this->ui] ) )
+			return;
+		self::$single_instance_scripts[$this->ui] = true;
+		switch ( $this->ui ){
+			case "rgba" :
+				//scripts will be loaded from plugin/library/js/options
+				return "lava.option.color.rgbaui.js";
+				break;
+			case "wp" :
+				return "lava.option.color.wp.js";
+				break;
 		}
 		return false; //default return false
 	}

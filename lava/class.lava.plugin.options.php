@@ -19,8 +19,10 @@ abstract class LavaOption22 extends LavaLogging22 {
 	public $in_menu = "true";
 	public $required = false;
 	public $classes = array();
+	public $label_classes = array();
 	public $in_js = false;
 	public $tab = 0;
+	public static $single_instance_scripts = array();
 	protected $invalid = true;
 	function __construct($prefix, array $options, $no = 0){
 		// print_r($options);
@@ -46,16 +48,55 @@ abstract class LavaOption22 extends LavaLogging22 {
 		$this->default_optionals($options);
 		$this->init_tasks($options);
 		$script = $this->get_single_instance_footer_scripts();
+		// var_dump($script);
 		if ($script)
 			LavaCorePlugin22::set_si_footer_scripts($script);
 	}
+	/**
+	 * Not required. Simple helper function to run after base tasks are complete (creating the option)
+	 * @param type $options 
+	 * @return type
+	 */
 	protected function init_tasks($options){}
+	/**
+	 * Adds single input to the label_classes array, or merges array items.
+	 * @param array or string $class 
+	 * @return void
+	 */
+	public function add_label_class($class){
+		$this->add_class($class, "label_classes");
+	}
+	public function add_outer_class($class){
+	public function input_classes($ref = "classes"){
+		$classes = implode( " ", $this->ref );
+		$classes = sanitize_html_class( $classes );
+		return $classes;
+	}
+	public function add_class($class, $ref = "classes"){
+		if (is_array($class))
+			$this->$this->$ref = array_merge($this->$this->$ref, $class);
+		else array_push($this->$ref, $class);
+	}
+	/**
+	 * Generates and returns option label html
+	 * @return string
+	 */
 	public function get_option_label_html(){
 		$html = "";
+		$classes = $this->get_label_html_classes();
 		$required = $this->required ? "*" : "";
-		$html .= "<label for='{$this->id}'>{$this->label}{$required}</label>";
+		$html .= "<label class='$classes' for='{$this->id}'>{$this->label}{$required}</label>";
 		return $html;
 	}
+
+	/**
+	 * Alias of add_label_class Gets html ready list of label classes, separated by spaces
+	 * @return string
+	 */
+	public function get_label_html_classes(){
+		return input_classes("label_classes");
+	}
+
 	public function get_form_js(){
 		return "";
 	}
@@ -114,9 +155,6 @@ abstract class LavaOption22 extends LavaLogging22 {
 	public function output_filter($input){
 		return $input;
 	}
-	public function add_class($class){
-		$this->classes[] = $class;
-	}
 	public function is_required(){
 		if ($this->required){
 			$this->_error("set_value() could not be performed on {$this->name} because it is required and the value was empty after validation.");
@@ -139,15 +177,6 @@ abstract class LavaOption22 extends LavaLogging22 {
 		if ( $newValue == "" && $this->is_required() )
 			return false;
 		return update_option($this->id, $newValue);
-	}
-	public function input_classes(){
-		$temp = array();
-		foreach ($this->classes as $class){
-			$class = sanitize_html_class( $class );
-			$temp[] = $class;
-		}
-		$classes = implode(" ", $temp);
-		return $classes;
 	}
 	protected function required_html(){
 		return $this->required ? 

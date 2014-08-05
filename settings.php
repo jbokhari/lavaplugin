@@ -130,7 +130,8 @@ $dynamic = array( //array of available options
 	array(
 	      "name" => "color",
 	      "label" => "A Color",
-	      "type" => "color"
+	      "type" => "color",
+	      "ui" => "wp"
       ),
 	array(
 		"name" => "Repeater",
@@ -142,15 +143,31 @@ $dynamic = array( //array of available options
 				"label" => "Sub 1",
 				"type" => "str"
 			),
+			// [0] => repeater [1] => sortable [2] => bool [3] => array [4] => image [5] => color [6] => repeater
 			array(
 			    "name" => "subfield2",
 				"label" => "Sub 2",
-				"type" => "bool"	
+				"type" => "url"	
 			),
 			array(
-			    "name" => "subfield3",
-				"label" => "Sub 3",
-				"type" => "image"	
+			    "name" => "email",
+				"label" => "Email",
+				"type" => "email"	
+			),
+			// array(
+			//     "name" => "colorsub",
+			// 	"label" => "Color Sub",
+			// 	"type" => "color"	
+			// ),
+			// array(
+			//     "name" => "Color Sub 2",
+			// 	"label" => "Color Sub 2",
+			// 	"type" => "color"	
+			// ),
+			array(
+			    "name" => "subfield2",
+				"label" => "Sub 2",
+				"type" => "url"	
 			)
 		)
       )
