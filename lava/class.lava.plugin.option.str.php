@@ -14,7 +14,7 @@ final class LavaOption_str extends LavaOption22 {
 		$required = $this->required_html();
 		$name = $this->name;
 		$id = $this->id;
-		return "<input id='{$id}' class='{$classes}' {$required} type='text' name='{$id}' value='{$value}' />";
+		return "<input id='{$id}' class='{$classes}' {$required} type='text' name='{$name}' value='{$value}' />";
 	}
 	public function validate($newValue = ""){
 		/* later we can add better validation here like string length, zip code validation and stuff like that */

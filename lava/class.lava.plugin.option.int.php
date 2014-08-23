@@ -1,5 +1,5 @@
 <?php
-final class LavaOption_int extends LavaOption22 {
+class LavaOption_int extends LavaOption22 {
 
 	public $rules = array();
 
@@ -51,7 +51,7 @@ final class LavaOption_int extends LavaOption22 {
 		$step = $this->generate_step_value_html();
 		$name = $this->name;
 		$id = $this->id;
-		return "<input id='{$id}' class='{$classes}' {$required} type='number' $max $min $step name='{$id}' value='{$value}' />";
+		return "<input id='{$id}' class='{$classes}' {$required} type='number' $max $min $step name='{$name}' value='{$value}' />";
 	}
 	public function validate($newValue = ""){
 		$value = intval( $newValue );

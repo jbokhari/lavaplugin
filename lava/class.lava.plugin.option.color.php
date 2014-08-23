@@ -47,7 +47,7 @@ final class LavaOption_color extends LavaOption22 {
 		$name = $this->name;
 		$id = $this->id;
 		$html = "";
-		$html .= "<input name='{$id}' value='{$value}' class='{$classes}'>";
+		$html .= "<input id='{$id}' name='{$name}' value='{$value}' class='{$classes}'>";
 		return $html;
 	}
 	public function enqueue_scripts_and_styles(){

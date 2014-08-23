@@ -10,7 +10,7 @@ final class LavaOption_image extends LavaOption22 {
 		$html = "";
 		$html .= "<div class='image-container'>
 			<img id='{$id}_preview' class='image-preview {$id}-preview' src='{$value}' alt=''></div>";
-		$html .= "<input id='{$id}' class='{$classes}' {$required} type='hidden' name='{$id}' value='{$value}' />";
+		$html .= "<input id='{$id}' class='{$classes}' {$required} type='hidden' name='{$name}' value='{$value}' />";
 		$html .= "<input id='{$id}_button' type='button' class='media-upload media-{$id}' value='Upload'>";
 		$html .= "<input id='{$id}_clear' type='button' class='media-upload-clear media-{$id}-clear' value='Clear'>";
 		return $html;

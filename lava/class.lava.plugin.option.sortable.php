@@ -58,14 +58,13 @@ final class LavaOption_sortable extends LavaOption22 {
 		// print_r($items);
 		foreach ($items as $id){
 			$currentpost = $sortposts[$indices[$id]];
-			$status = ($currentpost['status'] !== "publish") ? " <span class=
-		'status'>&#8212;{$currentpost['status']}</span>" : '';
+			$status = ($currentpost['status'] !== "publish") ? " <span class='status'>&#8212;{$currentpost['status']}</span>" : '';
 			$fieldhtml .= '<li data-order="'.$indices[$id].'" data-id="'.$currentpost['id'].'" class="post-' . $currentpost['id'] . '">' . $currentpost['title'] . $status . '<div class="viewpost"><a href="'.admin_url("post.php").'?action=edit&post='.$currentpost['id'].'">edit</a></div><div class="exout">delete</div></li>';
 		}
 
 		$fieldhtml .= '</ul>';
 		$fieldhtml .= '<div id="sortable-order-' . $this->fieldnumber . '">';
-		$fieldhtml .= '<input type="hidden" name="'.$this->id.'" value="'.$value.'">';
+		$fieldhtml .= '<input type="hidden" name="'.$this->name.'" value="'.$value.'">';
 		$fieldhtml .= '</div>';
 		ob_start();
 		?>

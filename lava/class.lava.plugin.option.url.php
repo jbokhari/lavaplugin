@@ -7,7 +7,7 @@ final class LavaOption_url extends LavaOption22 {
 		$required = $this->required_html();
 		$name = $this->name;
 		$id = $this->id;
-		return "<input id='{$id}' class='{$classes}' {$required} type='url' name='{$id}' value='{$value}' />";
+		return "<input id='{$id}' class='{$classes}' {$required} type='url' name='{$name}' value='{$value}' />";
 	}
 	public function validate($newValue = ""){
 		return esc_url_raw( $newValue );

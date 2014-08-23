@@ -89,7 +89,7 @@ final class LavaOption_array extends LavaOption22 {
 			case "multiple" :
 				$multiple = $this->multiple_html();
 			case "select" :
-				$html .= "<select id='{$id}' class='{$classes}' {$multiple} {$required} type='url' name='{$id}[]'>";
+				$html .= "<select id='{$id}' class='{$classes}' {$multiple} {$required} type='url' name='{$name}[]'>";
 				foreach ($this->choices as $c){
 					$val = $c["value"];
 					$label = $c["label"];
@@ -106,7 +106,7 @@ final class LavaOption_array extends LavaOption22 {
 					$checked = $this->checked_html($val);
 					$choiceID = $this->id . "-" . $this->get_choice_slug($label);
 					$html .= "<label for='{$choiceID}'>$label</label>";
-					$html .= "<input id='{$choiceID}' {$checked} type='checkbox' name='{$id}[]' value='{$val}' />";
+					$html .= "<input id='{$choiceID}' {$checked} type='checkbox' name='{$name}[]' value='{$val}' />";
 				}
 				$html .= "</div>";
 				break;
@@ -118,7 +118,7 @@ final class LavaOption_array extends LavaOption22 {
 					$checked = $this->checked_html($val);
 					$choiceID = $this->id . "-" . $this->get_choice_slug($label);
 					$html .= "<label for='{$choiceID}'>$label</label>";
-					$html .= "<input id='{$choiceID}' {$checked} type='radio' name='{$id}[]' value='{$val}' />";
+					$html .= "<input id='{$choiceID}' {$checked} type='radio' name='{$name}[]' value='{$val}' />";
 				}
 				$html .= "</div>";
 				break;

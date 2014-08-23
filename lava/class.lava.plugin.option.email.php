@@ -7,7 +7,7 @@ final class LavaOption_email extends LavaOption22 {
 		$required = $this->required_html();
 		$name = $this->name;
 		$id = $this->id;
-		return "<input id='{$id}' class='{$classes}' {$required} type='email' name='{$id}' value='{$value}' />";
+		return "<input id='{$id}' class='{$classes}' {$required} type='email' name='{$name}' value='{$value}' />";
 	}
 	public function validate($newValue = ""){
 		return sanitize_email( $newValue );
