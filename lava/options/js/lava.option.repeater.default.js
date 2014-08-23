@@ -2,11 +2,11 @@ jQuery(document).ready(function($){
 	//clone button
 	$('.repeater-add').each(function(){
 		var id = $(this).data("id");
-		var repeatercount = $('<input type="hidden" id="repeatercount'+id+'" name="repeatercount'+id+'" value="" />');
+		var repeatercount = $('#' + id + '__meta_rows');
 		$(this).on('click', function(e){
 			var id = $(this).data("id");
 			e.preventDefault();
-			var container = $("#" + id + "-fields");
+			var container = $("#" + id + "-fields ul");
 			var rows = container.find(".repeater-row");
 			var clone = rows.last().clone();
 			clone.find("[type='hidden'], [type='text'], [type='email'], [type='number'], [type='password'], [type='url'], [type='date'], [type='text'], textarea").val("");
@@ -14,6 +14,8 @@ jQuery(document).ready(function($){
 			clone.find(".lava-color-chooser").val('');
 			clone.find("select").removeAttr("selected");
 			clone.appendTo(container);
+			var rows = parseInt( repeatercount.val() ) + 1;
+			repeatercount.val(rows);
 		}).after(repeatercount);
 	});
 

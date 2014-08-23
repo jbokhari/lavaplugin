@@ -14,19 +14,6 @@ if (!class_exists('LavaCorePlugin22')) :
 	require_once "class.lava.factory.php";
 	// Load abstract LavaOption class extended by options
 	require_once "class.lava.plugin.options.php";
-	// Load various options
-	// TODO: load these only when used using factory class
-	require_once "class.lava.plugin.option.str.php";
-	require_once "class.lava.plugin.option.url.php";
-	require_once "class.lava.plugin.option.array.php";
-	require_once "class.lava.plugin.option.sortable.php";
-	require_once "class.lava.plugin.option.textarea.php";
-	require_once "class.lava.plugin.option.int.php";
-	require_once "class.lava.plugin.option.image.php";
-	require_once "class.lava.plugin.option.email.php";
-	require_once "class.lava.plugin.option.bool.php";
-	require_once "class.lava.plugin.option.color.php";
-	require_once "class.lava.plugin.option.repeater.php";
 	class LavaCorePlugin22 extends LavaLogging22 {
 		public $optionspage = array();
 		public $options = array();
@@ -222,7 +209,7 @@ if (!class_exists('LavaCorePlugin22')) :
 			$msg = '';
 			$affected = 0;
 			extract($_POST);
-			// print_r($_POST);
+			print_r($_POST);
 			foreach ($this->lava_options as $option) {
 				$id = $option->id;
 				$this->_log("Inside loop to save $option->name...");
@@ -418,7 +405,7 @@ if (!class_exists('LavaCorePlugin22')) :
 			self::$queued_si_scripts[] = $script;
 		}
 		private function has_single_instance_footer_scripts(){
-			print_r(self::$queued_si_scripts);
+			// print_r(self::$queued_si_scripts);
 			if ( count(self::$queued_si_scripts) < 1)
 				return false;
 			else return true;
