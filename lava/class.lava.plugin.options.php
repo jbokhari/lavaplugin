@@ -115,7 +115,7 @@ abstract class LavaOption22 extends LavaLogging22 {
 	 * @return (string)
 	 */
 	public function get_single_instance_footer_scripts(){}
-	final private function delete_value(){
+	private function delete_value(){
 		return delete_option( $this->id );
 	}
 	public function default_optionals($options){
@@ -139,7 +139,7 @@ abstract class LavaOption22 extends LavaLogging22 {
 		if ( isset( $options['required'] ) )
 			$this->required = $options['required'];
 	}
-	final public function get_value($default = null){
+	public function get_value($default = null){
 		if ($default === null)
 			$default = $this->default;
 		if( ! $this->value){
