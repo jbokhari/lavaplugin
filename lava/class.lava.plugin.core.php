@@ -15,6 +15,7 @@ if (!class_exists('LavaCorePlugin22')) :
 	// Load abstract LavaOption class extended by options
 	require_once "class.lava.plugin.options.php";
 	// Load various options
+	// TODO: load these only when used using factory class
 	require_once "class.lava.plugin.option.str.php";
 	require_once "class.lava.plugin.option.url.php";
 	require_once "class.lava.plugin.option.array.php";
@@ -221,7 +222,7 @@ if (!class_exists('LavaCorePlugin22')) :
 			$msg = '';
 			$affected = 0;
 			extract($_POST);
-			print_r($_POST);
+			// print_r($_POST);
 			foreach ($this->lava_options as $option) {
 				$id = $option->id;
 				$this->_log("Inside loop to save $option->name...");
@@ -342,7 +343,7 @@ if (!class_exists('LavaCorePlugin22')) :
 				if( $option->tab != $tab ){
 					continue;
 				}
-				$this->fieldnumber++;
+				// $this->fieldnumber++;
 				// @uses static int $this->fieldnumber starting at 1
 				if ( isset( $option->in_menu ) && $option->in_menu ){
 					echo $option->get_option_header_html();

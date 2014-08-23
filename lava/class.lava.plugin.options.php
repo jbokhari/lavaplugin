@@ -67,14 +67,15 @@ abstract class LavaOption22 extends LavaLogging22 {
 		$this->add_class($class, "label_classes");
 	}
 	public function add_outer_class($class){
+	}
 	public function input_classes($ref = "classes"){
-		$classes = implode( " ", $this->ref );
+		$classes = implode( " ", $this->$ref );
 		$classes = sanitize_html_class( $classes );
 		return $classes;
 	}
 	public function add_class($class, $ref = "classes"){
 		if (is_array($class))
-			$this->$this->$ref = array_merge($this->$this->$ref, $class);
+			$this->$this->$ref = array_merge($this->$ref, $class);
 		else array_push($this->$ref, $class);
 	}
 	/**
@@ -94,7 +95,7 @@ abstract class LavaOption22 extends LavaLogging22 {
 	 * @return string
 	 */
 	public function get_label_html_classes(){
-		return input_classes("label_classes");
+		return $this->input_classes("label_classes");
 	}
 
 	public function get_form_js(){

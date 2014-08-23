@@ -1,6 +1,7 @@
 <?php
 final class LavaOption_repeater extends LavaOption22 {
 	public $rows = 1;
+	public $rowdata = array();
 	function init_tasks($options){
 		if ( isset($options['fields']) && ! empty( $options['fields'] ) &&  is_array( $options['fields'] ) ){
 			foreach ($options['fields'] as $f){
@@ -21,6 +22,7 @@ final class LavaOption_repeater extends LavaOption22 {
 			else{	
 				$this->_error("Too many sub fields assigned to option {$this->name}. Seven is the currently supported maximum.");
 			}
+			$this->understand_value();
 		}
 		echo "<pre>";
 		// print_r($this);
@@ -31,7 +33,33 @@ final class LavaOption_repeater extends LavaOption22 {
 		}
 		echo "</pre>";
 	}
+	/**
+	 * Unserialize and convert data to $this->rowData
+	 * @return void
+	 */
+	public function understand_value(){
+		$values = unserialize( $this->get_value() );
+		if ( isset( $values['_rows'] ) && !empty( $values['_rows'] ) ){
+			$this->rows = $values['_rows'];
+		} else {
+			$this->rows = 1;
+		}
+		for ($i = 0; $i < $this->rows; $i++) {
+			$this->rowData[$i] = array();
+			foreach ( $this->fields as $f ){
+				if ( $f == "_row" || empty($f) )
+					continue;
+				$this->rowData[$i][$f->name] = $values[$f];
+			}
+		}
+	}
 	public function get_option_field_html(){
+		// $this->set_value(array(
+		// 		"_rows" => 2,
+		// 		""
+
+		// 	)
+		print_r($this->fields);
 		$html = "";
 		$html .= "<div id='{$this->id}-fields' class='cf repeater-field-fields'>";
 		$html .= "<div class='repeater-head'>";
@@ -39,13 +67,19 @@ final class LavaOption_repeater extends LavaOption22 {
 			$html .= $f->get_option_label_html();
 		}
 		$html .= "</div>";
-		$html .= "<div class='repeater-row cf'>";
+		$html .= "<ul>";
+
 		for ($i = 0; $i < $this->rows; $i++) { 
-			foreach ($this->fields as $f){
-				$html .= $f->get_option_field_html();
-			}
+			$html .= "<li class='repeater-row cf'>";
+
+				foreach ($this->fields as $f){
+					$html .= $f->get_option_field_html();
+				}
+
+			$html .= "</li>";//end row
 		}
-		$html .= "</div>";//end row
+
+		$html .= "</ul>";
 		$html .= "</div>";//end container
 		$html .= "<div class='cf button-container'>";
 		$html .= "<button data-id='$this->id' class='repeater-add'>Add Fields</button>";
@@ -65,8 +99,8 @@ final class LavaOption_repeater extends LavaOption22 {
 		return false; //default return false
 	}
 	public function validate($newValue = ""){
-		foreach($this->fields as $field){
-			
-		}
+		// foreach($this->fields as $field){
+		// 	var_dump($field);
+		// }
 	}
 }
