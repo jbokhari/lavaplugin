@@ -104,6 +104,7 @@ if (!class_exists('LavaCorePlugin22')) :
 				$this->lava_options[$name] = LavaFactory::create($this->prefix, $option );
 			}
 		}
+		/** TODO: Broken! These need to be rewritten to follow best practices for de/activation **/ 
 		public function plugin_activate(){
 			foreach( $this->dynamic as $name => $values){
 				$option = $this->prefix($name);
@@ -115,50 +116,6 @@ if (!class_exists('LavaCorePlugin22')) :
 				$option = $this->prefix($name);
 				delete_option( $option );
 			}
-		}
-		public function update_option( $name, $value ){
-			$this->_log( __FUNCTION__ . " was executed using $name and $value");
-			$option = $this->dynamic[$name];
-
-			if( $value == '' && isset( $option['required'] ) && $option['required'] ){
-			//is it required?
-				//try old value
-				$this->log("$this->dynamic['name'] was reverted to its old state because it was required but the value was empty.");
-				$value = $option['default'];
-				return update_option($option, $value );
-			}
-			switch($option['type']) {
-				case 'url':
-				case 'email':
-				case 'str':
-				case 'textarea':
-					$value = esc_textarea( $value );
-					break;
-				case 'int' :
-					$value = intval($value);
-					break;
-				case 'bool' :
-					$value = $value;
-					break;
-				case 'image' :
-					$value = $value;
-					break;
-				case 'array' :
-					// if value is an available option
-					echo $value;
-					$choices = array();
-					foreach($option['values'] as $key => $l ){
-						$choices[] = $key;
-					}
-					$value = ( in_array( $value, $choices ) ) ? $value : $option['default'];
-					// $value = $value;
-					break;
-				default :
-					$value = $value;
-					break;
-			}
-			$id = $this->option_prefix . $name;
-			return update_option($id, $value );
 		}
 		public function do_tabs($current){
 		    echo '<div id="icon-themes" class="icon32"><br /></div>';
@@ -211,7 +168,7 @@ if (!class_exists('LavaCorePlugin22')) :
 			extract($_POST);
 			print_r($_POST);
 			foreach ($this->lava_options as $option) {
-				$id = $option->id;
+				$name = $option->name;
 				$this->_log("Inside loop to save $option->name...");
 				if ( $option->type == 'info' ) {
 					$this->_log("{$this->name} was a info field, skipping save function.");
@@ -224,10 +181,10 @@ if (!class_exists('LavaCorePlugin22')) :
 				if ( $option->in_menu == false ){
 					$this->_log("{$this->name} is not in_menu, skipping save function.");
 				}
-				$this->_log(print_r($option, true));
+				// $this->_log(print_r($option, true));
 				$this->_log("Current Tab: $current_tab");
 				// rather than check if the value is bool, we'll just assume that when we get this far, if the post data is missing, the value is false;
-				$newValue = isset($$id) ? $$id : "false";
+				$newValue = isset($$name) ? $$name : "";
 				if ( $option->in_menu ){
 					// $this->_log("set_value is being run. {$newValue}");
 					if ($option->set_value($newValue) )
@@ -278,7 +235,6 @@ if (!class_exists('LavaCorePlugin22')) :
 		 * @return void
 		 */
 		public function display_admin_page(){
-			echo get_option("rc_sometextfield");
 			echo "<div class='wrap " . $this->prefix . "options-page " . $this->prefix . "wrap'>";
 			// $msg = $this->save_admin();
 			$current_tab = ( isset( $_GET['tab'] ) ) ? intval( $_GET['tab'] ) : 0 ;
@@ -320,7 +276,7 @@ if (!class_exists('LavaCorePlugin22')) :
 			// 	$this->display_logs();
 				foreach($this->lava_options as $option){
 			// 		echo $option->label;
-			// 		$option->display_logs();
+					$option->display_logs();
 					$option->display_errors();
 			// 	}
 			}

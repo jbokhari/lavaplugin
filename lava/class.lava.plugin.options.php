@@ -19,6 +19,7 @@ abstract class LavaOption22 extends LavaLogging22 {
 	public $in_menu = "true";
 	public $required = false;
 	public $classes = array();
+	public $container_classes = array();
 	public $label_classes = array();
 	public $in_js = false;
 	public $tab = 0;
@@ -51,6 +52,7 @@ abstract class LavaOption22 extends LavaLogging22 {
 		// var_dump($script);
 		if ($script)
 			LavaCorePlugin22::set_si_footer_scripts($script);
+		$this->add_container_class("{$this->type}-field");
 	}
 	/**
 	 * Not required. Simple helper function to run after base tasks are complete (creating the option)
@@ -63,14 +65,20 @@ abstract class LavaOption22 extends LavaLogging22 {
 	 * @param array or string $class 
 	 * @return void
 	 */
+	public function add_container_class($class){
+		$this->add_class($class, "container_classes");
+	}
 	public function add_label_class($class){
 		$this->add_class($class, "label_classes");
 	}
 	public function add_outer_class($class){
 	}
-	public function input_classes($ref = "classes"){
+	public function input_classes(){
+		return $this->get_classes_list("classes");
+	}
+	public function get_classes_list($ref = "classes"){
 		$classes = implode( " ", $this->$ref );
-		$classes = sanitize_html_class( $classes );
+		// $classes = sanitize_html_class( $classes );
 		return $classes;
 	}
 	public function add_class($class, $ref = "classes"){
@@ -95,14 +103,18 @@ abstract class LavaOption22 extends LavaLogging22 {
 	 * @return string
 	 */
 	public function get_label_html_classes(){
-		return $this->input_classes("label_classes");
+		return $this->get_classes_list("label_classes");
+	}
+	public function get_container_html_classes(){
+		return $this->get_classes_list("container_classes");
 	}
 
 	public function get_form_js(){
 		return "";
 	}
 	final public function get_option_header_html(){
-		return "<div id='{$this->id}-container' class='option-block field-{$this->fieldnumber}'>";
+		$classes = $this->get_container_html_classes();
+		return "<div id='{$this->id}-container' class='option-block field-{$this->fieldnumber} $classes'>";
 	}
 	final public function get_option_footer_html(){
 		$return = $this->get_form_js();
@@ -144,6 +156,7 @@ abstract class LavaOption22 extends LavaLogging22 {
 			$default = $this->default;
 		if( ! $this->value){
 			$value = get_option($this->id, $default);
+			// var_dump($value);
 			$this->value = $this->output_filter($value);
 		}
 		return $this->value;
@@ -158,8 +171,6 @@ abstract class LavaOption22 extends LavaLogging22 {
 	}
 	public function is_required(){
 		if ($this->required){
-			$this->_error("set_value() could not be performed on {$this->name} because it is required and the value was empty after validation.");
-			$this->invalidate();
 			return true;
 		} else {
 			return false;
@@ -175,8 +186,11 @@ abstract class LavaOption22 extends LavaLogging22 {
 	public function set_value($newValue = ""){
 		$this->_log("set_value() was run.");
 		$newValue = $this->validate($newValue);
-		if ( $newValue == "" && $this->is_required() )
+		if ( $newValue == "" && $this->is_required() ){
+			$this->invalidate();
 			return false;
+		}
+		var_dump($newValue);
 		return update_option($this->id, $newValue);
 	}
 	protected function required_html(){

@@ -122,11 +122,11 @@ $dynamic = array( //array of available options
 	//       "label" => "Text Area",
 	//       "type" => "textarea"
  //      ),
-	// array(
-	//       "name" => "image",
-	//       "label" => "Image",
-	//       "type" => "image"
-	//       ),
+	array(
+	      "name" => "image",
+	      "label" => "Image",
+	      "type" => "image"
+	      ),
 	// array(
 	//       "name" => "color",
 	//       "label" => "A Color",
@@ -149,11 +149,11 @@ $dynamic = array( //array of available options
 				"label" => "Sub 2",
 				"type" => "str"	
 			),
-			// array(
-			//     "name" => "email",
-			// 	"label" => "Email",
-			// 	"type" => "image"	
-			// ),
+			array(
+			    "name" => "email",
+				"label" => "Email",
+				"type" => "image"	
+			),
 			// array(
 			//     "name" => "colorsub",
 			// 	"label" => "Color Sub",

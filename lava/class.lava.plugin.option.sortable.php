@@ -6,13 +6,13 @@ final class LavaOption_sortable extends LavaOption22 {
 		}
 		$this->add_class("lava-sortable");
 	}
-	public function get_single_instance_footer_scripts(){
-		if ( $this->ui == "rgba" && empty(self::$single_instance_scripts[$this->ui]) ){
-			self::$single_instance_scripts[$this->ui] = true;
-			return "jQuery('input.rgbacolorpicker').rgbacolorpicker();";
-		}
-		return false; //default return false
-	}
+	// public function get_single_instance_footer_scripts(){
+	// 	if ( $this->ui == "rgba" && empty(self::$single_instance_scripts[$this->ui]) ){
+	// 		self::$single_instance_scripts[$this->ui] = true;
+	// 		return "jQuery('input.rgbacolorpicker').rgbacolorpicker();";
+	// 	}
+	// 	return false; //default return false
+	// }
 	public function get_option_field_html(){
 		$fieldhtml = '';
 		$classes = $this->input_classes();
