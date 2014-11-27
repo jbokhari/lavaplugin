@@ -33,8 +33,9 @@ if (!class_exists('LavaCorePlugin')) :
 		protected $option_prefix;
 		protected $ver;
 
-		public function __construct($options = null, $prefix = 'lava_'){
+		public function __construct($factory){
 
+			$this->factory = $factory;
 			$this->logger = $this->generate_logging_object();
 
 			$this->set_options($options);
@@ -51,7 +52,7 @@ if (!class_exists('LavaCorePlugin')) :
 			$this->init();
 		}
 		public function generate_logging_object(){
-			return new LavaLogging();
+			return new LavaLogging("Plugin Core");
 		}
 		public static function addsiscript($param){
 			vardump($param);
@@ -79,17 +80,12 @@ if (!class_exists('LavaCorePlugin')) :
 			return $option;
 		}
 
-		public function set_options($options){
-			$path = '';
+		public function set_options(){
 			require_once( plugin_dir_path(__FILE__) . '/../settings.php' );
 			$this->static = $static;
-			$this->dynamic = $dynamic;
-			foreach( $this->dynamic as $option ) {
+			foreach( $dynamic as $option ) {
 				$name = $option['name'];
-				$this->lava_options[$name] = LavaFactory::create($this->prefix, $option, $this->classname );
-				foreach( $this->lava_options[$name]->single_instance_scripts as $script ){
-					$this->set_si_footer_scripts($script);
-				}
+				$this->options[$name] = $this->factory->create($this->prefix, $option, $this->classname );
 			}
 		}
 		/** TODO: Broken! These need to be rewritten to follow best practices for de/activation **/ 
@@ -123,7 +119,7 @@ if (!class_exists('LavaCorePlugin')) :
 			$include['plugin_prefix'] = $this->option_prefix;
 			$include['plugin_version'] = $this->version;
 
-			foreach($this->lava_options as $option){
+			foreach($this->options as $option){
 
 				if ( isset( $option->in_js ) && $option->in_js == true ){
 					$value = $option->get_value();
@@ -155,7 +151,7 @@ if (!class_exists('LavaCorePlugin')) :
 			$affected = 0;
 			extract($_POST);
 			print_r($_POST);
-			foreach ($this->lava_options as $option) {
+			foreach ($this->options as $option) {
 				$name = $option->name;
 				$this->logger->_log("Inside loop to save $option->name...");
 				if ( $option->type == 'info' ) {
@@ -250,7 +246,6 @@ if (!class_exists('LavaCorePlugin')) :
 				wp_nonce_field( $nonceaction, $noncename );
 				echo "<button class='button button-primary {$this->prefix}plugin-save-btn' type='submit'>Save Options</button>";
 			}
-			$this->single_instance_footer_scripts();
 			$this->debug_info();
 			echo "</form>";
 			echo "</div><!-- EOF WRAP -->";
@@ -262,7 +257,7 @@ if (!class_exists('LavaCorePlugin')) :
 			// 	// print_r($this->cache);
 				$this->logger->display_errors();
 			// 	$this->display_logs();
-				foreach($this->lava_options as $option){
+				foreach($this->options as $option){
 			// 		echo $option->label;
 					$option->logger->display_logs();
 					$option->logger->display_errors();
@@ -270,7 +265,7 @@ if (!class_exists('LavaCorePlugin')) :
 			}
 		}
 		public function generate_option_fields($tab){
-			foreach ($this->lava_options as $option) {
+			foreach ($this->options as $option) {
 				if( $option->tab != $tab ){
 					continue;
 				}
@@ -344,34 +339,6 @@ if (!class_exists('LavaCorePlugin')) :
 			} else {
 				return "LAVAOBJ";
 			}
-		}
-		static function set_si_footer_scripts($name, $script){
-			if ( !isset(self::$queued_si_scripts[$name]) )
-				self::$queued_si_scripts[$name] = $script;
-		}
-		private function has_single_instance_footer_scripts(){
-			// print_r(self::$queued_si_scripts);
-			if ( count(self::$queued_si_scripts) < 1)
-				return false;
-			else return true;
-		}
-		private function single_instance_footer_scripts(){
-			if ( ! $this->has_single_instance_footer_scripts())
-				return;
-			// echo "<script>" . PHP_EOL;
-			// echo "jQuery(document).ready(function($){" . PHP_EOL;
-			// echo "console.log('queued scripts');" . PHP_EOL;
-			echo $this->get_single_instance_footer_scripts();
-			// echo "});" . PHP_EOL;
-			// echo "</script>";
-		}
-		private function get_single_instance_footer_scripts(){ 
-
-			$base = $this->dir . "/options/js/";
-			foreach (self::$queued_si_scripts as $file){
-				$scripts = "<script src='{$base}{$file}'></script>" . PHP_EOL;
-			}
-			return $scripts;
 		}
 		public function admin_enqueue_scripts_and_styles(){
 			$version = $this->get_script_version();

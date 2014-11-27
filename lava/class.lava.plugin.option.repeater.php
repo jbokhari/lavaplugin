@@ -4,7 +4,6 @@ class LavaOption_repeater extends LavaOption {
 	function init_tasks($options){
 		if ( isset($options['fields']) && ! empty( $options['fields'] ) &&  is_array( $options['fields'] ) ){
 			foreach ($options['fields'] as $f){
-				// print_r($f);
 				//unsupported options currently
 				$unsupported = array("repeater", "sortable", "bool", "array", "repeater", "color");
 				if (in_array($f['type'], $unsupported)){
@@ -15,27 +14,17 @@ class LavaOption_repeater extends LavaOption {
 				if ( isset( $this->fields[$f['id']] ) )
 					$this->_error("The repeater field <code>{$this->name}</code> already has a subfield with the id <code>{$f['id']}</code>, it has been overridden with latest given arguments.");
 				$f['name'] = $this->name . "[{$f['name']}][]";
-				$this->fields[$f['id']] = LavaFactory::create("", $f, $this->ancestor );
-			}
+				$this->fields[$f['id']] = LavaFactory::create("", $f );
+			}   
 			$count = count($this->fields);
-			if ($count < 7){
+			if ($count < 10){
 				$this->add_outer_class("col-1of{$count}");
 				$this->column_width = $count;
 			}
 			else{	
-				$this->_error("Too many sub fields assigned to option {$this->name}. Seven is the currently supported maximum.");
+				$this->_error("Too many sub fields assigned to option {$this->name}. Ten is the currently supported maximum.");
 			}
-			//This is running too early, so when data saves, get_value() already has done it's thing and saves the wrong ammount of rows.
-			// $this->understand_values();
 		}
-		// echo "<pre>";
-		// // print_r($this);
-		// foreach($this->fields as $field){
-		// 	$f = $this->id . "_" . $field->name;
-		// 	// print_r( $f );
-		// 	// print_r( $_POST[$f] );
-		// }
-		// echo "</pre>";
 	}
 	/**
 	 * Unserialize and convert data to $this->{OPTION}->value
@@ -115,18 +104,6 @@ class LavaOption_repeater extends LavaOption {
 		$html .= "<button data-id='$this->id' class='repeater-add'>Add Fields</button>";
 		$html .= "</div>";
 		return $html;
-	}
-	public function get_single_instance_footer_scripts(){
-		if ( ! empty( self::$single_instance_scripts[$this->ui] ) )
-			return;
-		self::$single_instance_scripts[$this->ui] = true;
-		switch ( $this->ui ){
-			case "default" :
-				//scripts will be loaded from plugin/library/js/options
-				self::$single_instance_scripts[$this->ui] = "lava.option.repeater.default.js";
-				break;
-		}
-		return false; //default return false
 	}
 	// public function set_value($newValue = ""){
 	// 	$this->validate($newValue);

@@ -51,10 +51,6 @@ class LavaPlugin extends LavaCorePlugin {
 	public $localize_object = 'LPGLOBAL';
 	protected $plugin_slug;
 	protected $templates;
-	private static $instance;
-	public function __construct(){
-		parent::__construct();
-	}
 	public function init(){
 		$this->classname = get_class( $this );
 		$this->useFrontendCss = true;
@@ -63,13 +59,6 @@ class LavaPlugin extends LavaCorePlugin {
 		$this->useAdminJs = true;
 		$plugin = plugin_basename(__FILE__); 
 		add_filter("plugin_action_links_$plugin", array($this, 'add_settings_page') );
-	}
-	
-	public static function get_instance() {
-		if (null == self::$instance ) {
-			self::$instance = new LavaPlugin();
-		}
-		return self::$instance;
 	}
 	function option($option, $default = null){
 		echo $this->get_option($option, $default);
@@ -110,4 +99,7 @@ class LavaPlugin extends LavaCorePlugin {
 	  return $links; 
 	}
 }
-$LavaPlugin = LavaPlugin::get_instance();
+
+$factory = new LavaFactory;
+
+$lavaplugin = new LavaPlugin($factory);

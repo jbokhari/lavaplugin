@@ -151,7 +151,7 @@ $dynamic = array( //array of available options
 			),
 			array(
 			    "name" => "email",
-				"label" => "Email",
+				"label" => "Image",
 				"type" => "image"	
 			),
 			// array(

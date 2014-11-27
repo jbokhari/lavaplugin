@@ -1,8 +1,6 @@
 <?php
 /**
  * LavaOption basic elements of individual lava options. Contains two abstract methods
- * @abstract validate() converts new information to db safe value
- * @abstract get_option_field_html() generates html field for admin page
  * @package Lava
  * @author Jameel Bokhari
  * @license GPL22
@@ -23,21 +21,21 @@ abstract class LavaOption {
 	public $label_classes = array();
 	public $in_js = false;
 	public $tab = 0;
-	public $single_instance_scripts = array();
 	protected $invalid = true;
 	function __construct($prefix, array $options, $no = 0){
 		$this->ancestor = $ancestor;
-		$this->logger = $this->generate_logging_object();
 		$this->prefix = $prefix;
 		if ( isset( $options['name'] ) ){
 			$this->name = $options['name'];
+			$this->logger = $this->generate_logging_object();
 		} else {
-			$this->_error("<code>Name</code> field not set for option {$this->name}. The label field and name are required.");
+			$this->logger = $this->generate_logging_object();
+			$this->logger->_error("<code>Name</code> field not set for option {$this->name}. The label field and name are required.");
 		}
 		if ( isset( $options['label'] ) ){
 			$this->label = $options['label'];
 		} else {
-			$this->_error("<code>Label</code> field not set for option {$this->name}. The label field and name are required.");
+			$this->logger->_error("<code>Label</code> field not set for option {$this->name}. The label field and name are required.");
 		} 
 		$this->classes[] = "field-" . $no;
 		$this->fieldnumber = $no;
@@ -48,11 +46,10 @@ abstract class LavaOption {
 			$this->id = $options['id'] = $this->prefix . $options['name'];
 		$this->default_optionals($options);
 		$this->init_tasks($options);
-
 		$this->add_container_class("{$this->type}-field");
 	}
 	public function generate_logging_object(){
-		return new LavaLogging();
+		return new LavaLogging($this->name);
 	}
 	/**
 	 * Not required. Simple helper function to run after base tasks are complete (creating the option)
@@ -97,7 +94,6 @@ abstract class LavaOption {
 		$html .= "<label class='$classes' for='{$this->id}'>{$this->label}{$required}</label>";
 		return $html;
 	}
-
 	/**
 	 * Alias of add_label_class Gets html ready list of label classes, separated by spaces
 	 * @return string
@@ -126,7 +122,6 @@ abstract class LavaOption {
 	 * Used by LavaPlugin class to queue JavaScript to be appended to the options page when this option is loaded. These scripts are defined in this function when a script is needed to be run only one time for no matter how many options of this type are created.
 	 * @return (string)
 	 */
-	public function get_single_instance_footer_scripts(){}
 	private function delete_value(){
 		return delete_option( $this->id );
 	}

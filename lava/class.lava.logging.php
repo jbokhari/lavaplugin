@@ -8,10 +8,15 @@
  */
 
 class LavaLogging implements LavaLogger{
+	public $id;
 	public $error = array();
 	public $log = array();
+	public function __construct($id = "Unknown Object"){
+		var_dump($id);
+		$this->id = $id;
+	}
 	public function display_logs( $echo = true, $verbose = false ){
-		$html  = "<h3>Logs [$this->name]:</h3>";
+		$html  = "<h3>Logs [$this->id]:</h3>";
 		$html .= "<ul>";
 		foreach($this->log as $log){
 			$html .= "<li>$log</li>";

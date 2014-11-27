@@ -7,13 +7,15 @@
  */
 final class LavaFactory {
 	static public $no = -1;
-	static function create($prefix, array $options, $plugin ){
+	static function create($prefix, array $options ){
 		self::$no++;
 		$type = $options['type'];
 		if (!$type)
 			return;
 		require_once "class.lava.plugin.option." . $type . ".php";
 		$object = "LavaOption_{$type}";
-		return new $object($prefix, $options, self::$no, $plugin);
+		$return = new $object($prefix, $options, self::$no, $plugin);
+		return $return;
+
 	}
 }

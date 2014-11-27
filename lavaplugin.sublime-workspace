@@ -339,6 +339,54 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "plugin.php",
+			"settings":
+			{
+				"buffer_size": 3529,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "lava/class.lava.plugin.options.php",
+			"settings":
+			{
+				"buffer_size": 6068,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "lava/class.lava.plugin.option.repeater.php",
+			"settings":
+			{
+				"buffer_size": 4565,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "lava/class.lava.factory.php",
+			"settings":
+			{
+				"buffer_size": 497,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "lava/class.lava.logging.php",
+			"settings":
+			{
+				"buffer_size": 1206,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "settings.php",
+			"settings":
+			{
+				"buffer_size": 4275,
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -516,6 +564,24 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.sortable.php",
+		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.core.php",
+		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.factory.php",
+		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/settings.php",
+		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/interface/interface.lava.logger.php",
+		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.logging.php",
+		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/options/js/lava.option.repeater.default.js",
+		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.repeater.php",
+		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/plugin.php",
+		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.image.php",
+		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.textarea.php",
+		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.url.php",
+		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.str.php",
+		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.int.php",
+		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.email.php",
+		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.color.php",
+		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.bool.php",
+		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.array.php",
 		"/C/Users/Jamee/AppData/Local/Temp/fz3temp-1/style.css",
 		"/C/Users/Jamee/AppData/Local/Temp/fz3temp-1/page-form-test.php",
 		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/functions.php",
@@ -545,34 +611,17 @@
 		"/C/Users/Jamee/AppData/Local/Temp/fz3temp-1/wp-config.php",
 		"/C/Users/Jamee/Desktop/header.backup",
 		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.options.php",
-		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.core.php",
 		"/C/Users/Jamee/AppData/Local/Temp/fz3temp-1/home.php",
 		"/C/Users/Jamee/AppData/Local/Temp/fz3temp-1/index.php",
 		"/C/Users/Jamee/AppData/Local/Temp/fz3temp-1/page.php",
 		"/C/Users/Jamee/Desktop/accordion-script.js",
 		"/C/Users/Jamee/AppData/Local/Temp/fz3temp-1/accordion-script.js",
-		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.logging.php",
-		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.factory.php",
 		"/C/Users/Jamee/AppData/Local/Temp/Temp1_developer_assessment.zip/developer_assessment/Code_Section/appendix_A.html",
-		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.repeater.php",
 		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/library/css/admin.css",
-		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/settings.php",
-		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/options/js/lava.option.repeater.default.js",
-		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.image.php",
 		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/options/js/lava.option.image.default.js",
 		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/library/js/libs/jscolor/jscolor.js",
 		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/library/js/admin.js",
-		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.sortable.php",
-		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/plugin.php",
-		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.color.php",
 		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/options/js/lava.option.color.rgbaui.js",
-		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.bool.php",
-		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.email.php",
-		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.int.php",
-		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.textarea.php",
-		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.array.php",
-		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.url.php",
-		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.str.php",
 		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/library/js/jquery-ui-autocomplete.min.js",
 		"/C/www/antiguareality/lib/inc/form-segments.php",
 		"/C/www/antiguareality/lib/inc/areadataviewall.js",
@@ -642,8 +691,7 @@
 		"/C/Program Files (x86)/Git/doc/git/html/git-push.html",
 		"/C/Users/Jamee/Documents/git-remote.html",
 		"/C/Users/Jamee/Documents/websites/jb/wp-content/themes/bonafide/archive.php",
-		"/C/Users/Jamee/Documents/websites/jb/wp-content/themes/bonafide/category-blog.old",
-		"/C/Users/Jamee/Documents/websites/jb/wp-content/themes/bonafide/sftp-config.json"
+		"/C/Users/Jamee/Documents/websites/jb/wp-content/themes/bonafide/category-blog.old"
 	],
 	"find":
 	{
@@ -651,7 +699,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 99.0,
 		"where_history":
 		[
 			""
@@ -662,6 +710,49 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"logger",
+			"Email",
+			"_error(",
+			"default_optionals",
+			"LavaLogging",
+			"script",
+			"single",
+			"lava_options",
+			"set_options",
+			"LavaFactory",
+			"LavaPlugin",
+			"single_instance_scripts",
+			"get_single_instance_script",
+			"get_single_instance_scripts",
+			"create(",
+			"set_si_footer_scripts",
+			"queued_si_scripts",
+			"get_single_instance_footer_scripts",
+			"queued_si_scripts",
+			"single_instance_footer_scripts",
+			"::",
+			"single_instance_footer_scripts",
+			"get_single_instance_footer_scripts",
+			"set_si_footer_scripts",
+			"get_single_instance_footer_scripts",
+			"LavaCorePlugin",
+			"get_single_instance_footer_scripts",
+			"repeater-add",
+			"$this->_log(",
+			"_log(",
+			"LavaOption22",
+			"LavaOption",
+			"LavaOption22",
+			"generate_logging_object",
+			"_log(",
+			"generate_logging_object",
+			"_log",
+			"log",
+			"set_options",
+			"get_cache",
+			"rc",
+			"_URL",
+			"LAVAPLUGINURL",
 			"\n",
 			"VM1485:2 ",
 			"rgba(229, 237, 242, 0.81)",
@@ -746,50 +837,7 @@
 			"abstract",
 			"_log",
 			"log",
-			"self::",
-			"set_si_footer_scripts",
-			"ui",
-			"get_single_instance_footer_scripts",
-			"set_si_footer_scripts",
-			"this is not typhoon",
-			"get_option_label_html()",
-			"th",
-			"$this->id",
-			"$id",
-			"id",
-			"update_admin_options",
-			"set_value",
-			".rc_options-page ",
-			".ui-sortable .repeater-row ",
-			".ui-sortable .repeater-row",
-			"get_container_html_classes",
-			"container",
-			"\"container\"",
-			"container",
-			"get_label_html_classes",
-			"input_classes",
-			"label_classes",
-			"column_width",
-			"\"",
-			"$(this)",
-			"ava-sortable",
-			"get_single_instance_footer_scripts",
-			"var_dump",
-			"print_r",
-			"var_dump",
-			"var_",
-			"rc_options",
-			"print_r",
-			"var_dump",
-			"__meta_rows",
-			"values",
-			"__meta",
-			"div",
-			"set_value",
-			"debug",
-			"value",
-			"understand_value",
-			"_meta__rows"
+			"self::"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -807,8 +855,189 @@
 	"groups":
 	[
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "plugin.php",
+					"settings":
+					{
+						"buffer_size": 3529,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3460,
+								3460
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1740.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "lava/class.lava.plugin.options.php",
+					"settings":
+					{
+						"buffer_size": 6068,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2303,
+								2303
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1071.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "lava/class.lava.plugin.option.repeater.php",
+					"settings":
+					{
+						"buffer_size": 4565,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5,
+								5
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "lava/class.lava.factory.php",
+					"settings":
+					{
+						"buffer_size": 497,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								491,
+								491
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "lava/class.lava.logging.php",
+					"settings":
+					{
+						"buffer_size": 1206,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								339,
+								339
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "settings.php",
+					"settings":
+					{
+						"buffer_size": 4275,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3515,
+								3515
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2835.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -858,16 +1087,64 @@
 		"selected_items":
 		[
 			[
+				"options",
+				"lava/class.lava.plugin.options.php"
+			],
+			[
+				"optios",
+				"lava/class.lava.plugin.option.sortable.php"
+			],
+			[
+				"settings",
+				"settings.php"
+			],
+			[
+				"factory",
+				"lava/class.lava.factory.php"
+			],
+			[
+				"logging",
+				"lava/class.lava.logging.php"
+			],
+			[
+				"plugin",
+				"plugin.php"
+			],
+			[
+				"lavafactory",
+				"lava/class.lava.factory.php"
+			],
+			[
+				"repeater",
+				"lava/class.lava.plugin.option.repeater.php"
+			],
+			[
+				"core",
+				"lava/class.lava.plugin.core.php"
+			],
+			[
+				"plugincore",
+				"lava/class.lava.plugin.core.php"
+			],
+			[
+				"pluginoptions",
+				"lava/class.lava.plugin.options.php"
+			],
+			[
+				"image",
+				"lava/class.lava.plugin.option.image.php"
+			],
+			[
+				"lavalogging",
+				"lava/class.lava.logging.php"
+			],
+			[
 				"frontendcss",
 				"front-end-master/library/css/frontend.css"
 			],
 			[
 				"frontend",
 				"front-end-master/library/css/front-end.css"
-			],
-			[
-				"plugin",
-				"front-end-master/plugin.php"
 			],
 			[
 				"page",
@@ -882,14 +1159,6 @@
 				"hq-enhanced.scss"
 			],
 			[
-				"plugincore",
-				"lava/class.lava.plugin.core.php"
-			],
-			[
-				"options",
-				"lava/class.lava.plugin.options.php"
-			],
-			[
 				"options.php",
 				"lava/class.lava.plugin.options.php"
 			],
@@ -902,20 +1171,12 @@
 				"lava/class.lava.plugin.options.php"
 			],
 			[
-				"settings",
-				"settings.php"
-			],
-			[
 				"lavacore",
 				"lava/class.lava.plugin.core.php"
 			],
 			[
 				"imagejs",
 				"lava/options/js/lava.option.image.default.js"
-			],
-			[
-				"image",
-				"lava/class.lava.plugin.option.image.php"
 			],
 			[
 				"repeaterjs",
@@ -934,10 +1195,6 @@
 				"library/js/admin.js"
 			],
 			[
-				"repeater",
-				"lava/options/js/lava.option.repeater.default.js"
-			],
-			[
 				"sortable",
 				"lava/class.lava.plugin.option.sortable.php"
 			],
@@ -946,16 +1203,8 @@
 				"lava/class.lava.plugin.options.php"
 			],
 			[
-				"core",
-				"lava/class.lava.plugin.core.php"
-			],
-			[
 				"lava",
 				"lava/class.lava.plugin.core.php"
-			],
-			[
-				"factory",
-				"lava/class.lava.factory.php"
 			],
 			[
 				"color",
@@ -1348,26 +1597,6 @@
 			[
 				"colu",
 				"techno/library/js/columns.js"
-			],
-			[
-				"admincss",
-				"dev-tools/css/jdt_admin.css"
-			],
-			[
-				"verba",
-				"dev-tools/inc/admin_verbiage.php"
-			],
-			[
-				"jdtadmin",
-				"dev-tools/inc/jdt_admin.php"
-			],
-			[
-				"hom",
-				"dev-tools/js/jdt_tmce_home_url.js"
-			],
-			[
-				"jdtad",
-				"dev-tools/js/jdt_admin.js"
 			]
 		],
 		"width": 0.0
