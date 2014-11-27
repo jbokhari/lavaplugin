@@ -1,5 +1,5 @@
 <?php
-final class LavaOption_color extends LavaOption22 {
+final class LavaOption_color extends LavaOption {
 	public $ui;
 	public $scripts = array(
         array( "jscolor", "libs/jscolor/jscolor.js", array() ),

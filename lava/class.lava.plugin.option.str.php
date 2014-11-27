@@ -6,7 +6,7 @@
  * @author Jameel Bokhari
  * @license GPL22
  */
-final class LavaOption_str extends LavaOption22 {
+final class LavaOption_str extends LavaOption {
 	public function get_option_field_html(){
 		$value = $this->get_value();
 		$value = esc_attr($value);

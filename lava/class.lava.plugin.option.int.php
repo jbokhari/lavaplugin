@@ -1,5 +1,5 @@
 <?php
-class LavaOption_int extends LavaOption22 {
+class LavaOption_int extends LavaOption {
 
 	public $rules = array();
 

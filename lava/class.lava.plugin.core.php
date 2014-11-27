@@ -7,14 +7,10 @@
  * @license GPL2
  * Last updated 7/20/2014
  */
-if (!class_exists('LavaCorePlugin22')) :
-	//logging class for debugging and error logging
-	require_once "class.lava.logging.php";
-	//LavaFactory creates lavaoptions
-	require_once "class.lava.factory.php";
-	// Load abstract LavaOption class extended by options
-	require_once "class.lava.plugin.options.php";
-	class LavaCorePlugin22 extends LavaLogging22 {
+if (!class_exists('LavaCorePlugin')) :
+
+	class LavaCorePlugin {
+		public $logger;
 		public $optionspage = array();
 		public $options = array();
 		public $cache = array();
@@ -38,6 +34,9 @@ if (!class_exists('LavaCorePlugin22')) :
 		protected $ver;
 
 		public function __construct($options = null, $prefix = 'lava_'){
+
+			$this->logger = $this->generate_logging_object();
+
 			$this->set_options($options);
 			$this->dir = plugin_dir_url( __FILE__ );
 			$this->cssdir = $this->dir . '../library/css/';
@@ -51,6 +50,12 @@ if (!class_exists('LavaCorePlugin22')) :
 			add_action( 'admin_head', array($this, "save_admin"));
 			$this->init();
 		}
+		public function generate_logging_object(){
+			return new LavaLogging();
+		}
+		public static function addsiscript($param){
+			vardump($param);
+		}
 		final static function get_dir(){
 			return plugin_dir_url( __FILE__ );
 		}
@@ -61,35 +66,15 @@ if (!class_exists('LavaCorePlugin22')) :
 			return plugin_dir_url( __FILE__ ) . "../library/css/";
 		}
 		public function enqueue_scripts(){
-			if( $this->get_cache( 'plugin_activated', false ) ){
-				add_action( 'wp_enqueue_scripts', array($this, 'frontend_enqueue_scripts_and_styles'), 999);
+			add_action( 'wp_enqueue_scripts', array($this, 'frontend_enqueue_scripts_and_styles'), 999);
 
-			}
 			add_action( 'admin_enqueue_scripts', array($this, 'admin_enqueue_scripts_and_styles'), 100 );
 		}
 		public function init(){
 			return;
 		}
 
-		public function get_cache($option, $default = null){
-			// if ( isset( $_GET['test'] ) ) echo "$option";
-			if ( !empty( $this->cache[$option] ) ){
-				return $this->cache[$option];
-				$this->_log("Option was found in cache for $option");
-			} else {
-				$this->_log("No option found in cache, creating cached value for $option");
-				$id = $this->prefix($option);
-				if ($default === null){
-					$default = $this->dynamic[$option]['default'];
-				}
-				$this->cache[$option] = get_option($id, $default);
-				// if ( isset( $_GET['test'] ) ) print_r($this->cache[$option]);
-				// if ( isset( $_GET['test'] ) ) echo $id;
-				return $this->cache[$option];
-			}
-
-		}
-		protected function prefix($option){
+		public function prefix($option){
 			$option = $this->option_prefix . $option;
 			return $option;
 		}
@@ -101,7 +86,10 @@ if (!class_exists('LavaCorePlugin22')) :
 			$this->dynamic = $dynamic;
 			foreach( $this->dynamic as $option ) {
 				$name = $option['name'];
-				$this->lava_options[$name] = LavaFactory::create($this->prefix, $option );
+				$this->lava_options[$name] = LavaFactory::create($this->prefix, $option, $this->classname );
+				foreach( $this->lava_options[$name]->single_instance_scripts as $script ){
+					$this->set_si_footer_scripts($script);
+				}
 			}
 		}
 		/** TODO: Broken! These need to be rewritten to follow best practices for de/activation **/ 
@@ -169,24 +157,24 @@ if (!class_exists('LavaCorePlugin22')) :
 			print_r($_POST);
 			foreach ($this->lava_options as $option) {
 				$name = $option->name;
-				$this->_log("Inside loop to save $option->name...");
+				$this->logger->_log("Inside loop to save $option->name...");
 				if ( $option->type == 'info' ) {
-					$this->_log("{$this->name} was a info field, skipping save function.");
+					$this->logger->_log("{$this->name} was a info field, skipping save function.");
 					continue;
 				}
 				if ($option->tab != $current_tab){
-					$this->_log("{$this->name} is not member of current tab $current_tab, skipping save function.");
+					$this->logger->_log("{$this->name} is not member of current tab $current_tab, skipping save function.");
 					continue;
 				}
 				if ( $option->in_menu == false ){
-					$this->_log("{$this->name} is not in_menu, skipping save function.");
+					$this->logger->_log("{$this->name} is not in_menu, skipping save function.");
 				}
-				// $this->_log(print_r($option, true));
-				$this->_log("Current Tab: $current_tab");
+				// $this->logger->_log(print_r($option, true));
+				$this->logger->_log("Current Tab: $current_tab");
 				// rather than check if the value is bool, we'll just assume that when we get this far, if the post data is missing, the value is false;
 				$newValue = isset($$name) ? $$name : "";
 				if ( $option->in_menu ){
-					// $this->_log("set_value is being run. {$newValue}");
+					// $this->logger->_log("set_value is being run. {$newValue}");
 					if ($option->set_value($newValue) )
 						$affected++;
 				}
@@ -205,27 +193,27 @@ if (!class_exists('LavaCorePlugin22')) :
 		 */
 		public function save_admin(){
 			$savepost = $this->prefix . "save_post";
-			$this->_log("save_admin() started");
+			$this->logger->_log("save_admin() started");
 			// print_r($_POST);
 			if( isset( $_POST[$savepost] ) ) :
-				$this->_log("$savepost was set");
+				$this->logger->_log("$savepost was set");
 				// print_r($_POST);
-				$this->_log("Going to attempt to save values");
+				$this->logger->_log("Going to attempt to save values");
 				$noncename = $this->prefix . 'nonce';
 				$nonceaction = $this->prefix . 'do_save_nonce';
 				$nonce = ( isset( $_POST[$noncename] ) ) ? $_POST[$noncename] : '' ;
 				$current_tab = ( isset( $_POST['tab'] ) ? $_POST['tab'] : null );
 				if ( wp_verify_nonce( $nonce, $nonceaction ) ){
-					$this->_log("Nonce verified.");
+					$this->logger->_log("Nonce verified.");
 				 	if ( current_user_can( 'manage_options' ) ){
-				 		$this->_log("User verified");
+				 		$this->logger->_log("User verified");
 						$this->admin_message = $this->update_admin_options($current_tab);
 					} else {
-						$this->_log("User permission does not allow saving field data. Nothing was changed.");
+						$this->logger->_log("User permission does not allow saving field data. Nothing was changed.");
 						$this->admin_message = "You lack permission to modify these settings.";
 					}
 				} else {
-					$this->_log("Nonce could not verify.");
+					$this->logger->_log("Nonce could not verify.");
 					$this->admin_message = "There was an error with the nonce field. Please try again.";
 				}
 			endif;
@@ -272,12 +260,12 @@ if (!class_exists('LavaCorePlugin22')) :
 			//Used to do all this...
 			// if( $this->is_debug_mode() ){ // no longer defined
 			// 	// print_r($this->cache);
-				$this->display_errors();
+				$this->logger->display_errors();
 			// 	$this->display_logs();
 				foreach($this->lava_options as $option){
 			// 		echo $option->label;
-					$option->display_logs();
-					$option->display_errors();
+					$option->logger->display_logs();
+					$option->logger->display_errors();
 			// 	}
 			}
 		}
@@ -357,8 +345,9 @@ if (!class_exists('LavaCorePlugin22')) :
 				return "LAVAOBJ";
 			}
 		}
-		static function set_si_footer_scripts($script){
-			self::$queued_si_scripts[] = $script;
+		static function set_si_footer_scripts($name, $script){
+			if ( !isset(self::$queued_si_scripts[$name]) )
+				self::$queued_si_scripts[$name] = $script;
 		}
 		private function has_single_instance_footer_scripts(){
 			// print_r(self::$queued_si_scripts);
@@ -366,16 +355,7 @@ if (!class_exists('LavaCorePlugin22')) :
 				return false;
 			else return true;
 		}
-		private function get_single_instance_footer_scripts(){ 
-
-			$base = $this->dir . "/options/js/";
-			foreach (self::$queued_si_scripts as $file){
-				$scripts = "<script src='{$base}{$file}'></script>" . PHP_EOL;
-			}
-			return $scripts;
-		}
 		private function single_instance_footer_scripts(){
-			echo "<!-- This is not typhoon -->";
 			if ( ! $this->has_single_instance_footer_scripts())
 				return;
 			// echo "<script>" . PHP_EOL;
@@ -384,6 +364,14 @@ if (!class_exists('LavaCorePlugin22')) :
 			echo $this->get_single_instance_footer_scripts();
 			// echo "});" . PHP_EOL;
 			// echo "</script>";
+		}
+		private function get_single_instance_footer_scripts(){ 
+
+			$base = $this->dir . "/options/js/";
+			foreach (self::$queued_si_scripts as $file){
+				$scripts = "<script src='{$base}{$file}'></script>" . PHP_EOL;
+			}
+			return $scripts;
 		}
 		public function admin_enqueue_scripts_and_styles(){
 			$version = $this->get_script_version();

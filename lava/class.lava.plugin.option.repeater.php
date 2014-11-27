@@ -1,5 +1,5 @@
 <?php
-class LavaOption_repeater extends LavaOption22 {
+class LavaOption_repeater extends LavaOption {
 	public $rows = 1;
 	function init_tasks($options){
 		if ( isset($options['fields']) && ! empty( $options['fields'] ) &&  is_array( $options['fields'] ) ){
@@ -15,7 +15,7 @@ class LavaOption_repeater extends LavaOption22 {
 				if ( isset( $this->fields[$f['id']] ) )
 					$this->_error("The repeater field <code>{$this->name}</code> already has a subfield with the id <code>{$f['id']}</code>, it has been overridden with latest given arguments.");
 				$f['name'] = $this->name . "[{$f['name']}][]";
-				$this->fields[$f['id']] = LavaFactory::create("", $f );
+				$this->fields[$f['id']] = LavaFactory::create("", $f, $this->ancestor );
 			}
 			$count = count($this->fields);
 			if ($count < 7){
@@ -42,7 +42,7 @@ class LavaOption_repeater extends LavaOption22 {
 	 * @return void
 	 */
 	public function output_filter($newValue){
-		$this->_log("understand_values() started.");
+		$this->logger->_log("understand_values() started.");
 		$values = unserialize( $newValue );
 		// var_dump($values);
 		if ( isset( $values['__meta_rows'] ) && !empty( $values['__meta_rows'] ) ){
@@ -76,7 +76,7 @@ class LavaOption_repeater extends LavaOption22 {
 		}
 	}
 	public function get_option_field_html(){
-		$this->_log("get_option_field_html() started.");
+		$this->logger->_log("get_option_field_html() started.");
 		// $this->set_value(array(
 		// 		"_rows" => 2,
 		// 		""
@@ -123,13 +123,13 @@ class LavaOption_repeater extends LavaOption22 {
 		switch ( $this->ui ){
 			case "default" :
 				//scripts will be loaded from plugin/library/js/options
-				return "lava.option.repeater.default.js";
+				self::$single_instance_scripts[$this->ui] = "lava.option.repeater.default.js";
 				break;
 		}
 		return false; //default return false
 	}
 	// public function set_value($newValue = ""){
-		// $this->validate($newValue);
+	// 	$this->validate($newValue);
 	// }
 	// 	foreach($this->fields as $field){
 	// 		// $this->

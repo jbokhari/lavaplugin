@@ -1,5 +1,5 @@
 <?php
-final class LavaOption_sortable extends LavaOption22 {
+final class LavaOption_sortable extends LavaOption {
 	public function init_tasks($options){
 		if ( isset( $options['sortable']) ){
 			$this->sortable = $options['sortable'];

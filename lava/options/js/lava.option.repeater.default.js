@@ -17,9 +17,11 @@ jQuery(document).ready(function($){
 			});
 			$(this).append(exout);
 		})
+		console.log("test");
 		$this.on('click', function(e){
-			var id = $(this).data("id");
+			console.log("test");
 			e.preventDefault();
+			var id = $(this).data("id");
 			var rows = container.find(".repeater-row");
 			var clone = rows.last().clone();
 			clone.find("[type='hidden'], [type='text'], [type='email'], [type='number'], [type='password'], [type='url'], [type='date'], [type='text'], textarea").val("");

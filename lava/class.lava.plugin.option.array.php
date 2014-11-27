@@ -8,7 +8,7 @@
  * @license GPL2
  * Last updated 7/20/2014
  */
-final class LavaOption_array extends LavaOption22 {
+final class LavaOption_array extends LavaOption {
 	public function init_tasks($options){
 		//backwards compaitibility, or to level confusiion over settings
 		if ( ! isset( $options['choices'] ) )

@@ -25,27 +25,38 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-define("ECT_RELATED_CONTENT_PATH", dirname(__FILE__));
-define("ECT_RELATED_CONTENT_URL", plugin_dir_url( __FILE__ ) );
+define("LAVAPLUGINPATH", dirname(__FILE__));
+define("LAVAPLUGINURL", plugin_dir_url( __FILE__ ) );
 require_once('lava/class.lava.plugin.core.php');
+//logging/error class implementation
+require_once "lava/interface/interface.lava.logger.php";
+//default class for debugging and error logging
+require_once "lava/class.lava.logging.php";
+//LavaFactory creates lavaoptions
+require_once "lava/class.lava.factory.php";
+// Load abstract LavaOption class extended by options
+require_once "lava/class.lava.plugin.options.php";
+
 /**
  * Class LavaPlugin
  * @uses LavaCorePlugin Version 2.2
  * @package ECT Related Content
  */
-class LavaPlugin extends LavaCorePlugin22 {
-	public $prefix = 'rc_';
+class LavaPlugin extends LavaCorePlugin {
+	public $prefix = 'lp_';
 	public $ver = '1.0.0';
-	public $option_prefix = 'rc_';
-	public $name = 'rc';
-	public $localize_object = 'RC';
+	public $option_prefix = 'lp_';
+	public $name = 'lp';
+	public $classname;
+	public $localize_object = 'LPGLOBAL';
 	protected $plugin_slug;
-	protected static $instance;
 	protected $templates;
+	private static $instance;
 	public function __construct(){
 		parent::__construct();
 	}
 	public function init(){
+		$this->classname = get_class( $this );
 		$this->useFrontendCss = true;
 		$this->useFrontendJs = true;
 		$this->useAdminCss = true;

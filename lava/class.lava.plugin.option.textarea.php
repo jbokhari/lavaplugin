@@ -1,5 +1,5 @@
 <?php 
-final class LavaOption_textarea extends LavaOption22 {
+final class LavaOption_textarea extends LavaOption {
 	public function get_option_field_html(){
 		$value = $this->get_value();
 		$value = esc_textarea($value);

@@ -6,7 +6,8 @@
  * @author Jameel Bokhari
  * @license GPL22
  */
-abstract class LavaLogging22 {
+
+class LavaLogging implements LavaLogger{
 	public $error = array();
 	public $log = array();
 	public function display_logs( $echo = true, $verbose = false ){

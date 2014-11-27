@@ -1,14 +1,14 @@
 <?php
 /**
- * LavaOption22 basic elements of individual lava options. Contains two abstract methods
+ * LavaOption basic elements of individual lava options. Contains two abstract methods
  * @abstract validate() converts new information to db safe value
  * @abstract get_option_field_html() generates html field for admin page
  * @package Lava
- * @version 2.2
  * @author Jameel Bokhari
  * @license GPL22
  */
-abstract class LavaOption22 extends LavaLogging22 {
+abstract class LavaOption {
+	public $logging;
 	public $name;
 	public $label;
 	public $id;
@@ -23,11 +23,11 @@ abstract class LavaOption22 extends LavaLogging22 {
 	public $label_classes = array();
 	public $in_js = false;
 	public $tab = 0;
-	public static $single_instance_scripts = array();
+	public $single_instance_scripts = array();
 	protected $invalid = true;
 	function __construct($prefix, array $options, $no = 0){
-		// print_r($options);
-		$this->_log("Instantiated");
+		$this->ancestor = $ancestor;
+		$this->logger = $this->generate_logging_object();
 		$this->prefix = $prefix;
 		if ( isset( $options['name'] ) ){
 			$this->name = $options['name'];
@@ -48,11 +48,11 @@ abstract class LavaOption22 extends LavaLogging22 {
 			$this->id = $options['id'] = $this->prefix . $options['name'];
 		$this->default_optionals($options);
 		$this->init_tasks($options);
-		$script = $this->get_single_instance_footer_scripts();
-		// var_dump($script);
-		if ($script)
-			LavaCorePlugin22::set_si_footer_scripts($script);
+
 		$this->add_container_class("{$this->type}-field");
+	}
+	public function generate_logging_object(){
+		return new LavaLogging();
 	}
 	/**
 	 * Not required. Simple helper function to run after base tasks are complete (creating the option)
@@ -131,7 +131,7 @@ abstract class LavaOption22 extends LavaLogging22 {
 		return delete_option( $this->id );
 	}
 	public function default_optionals($options){
-		$this->_log("Run default_optionals()");
+		$this->logger->_log("Run default_optionals()");
 		if ( isset( $options['type'] ) )
 			$this->type = $options['type'];
 		if ( isset( $options['default'] ) )
@@ -184,7 +184,7 @@ abstract class LavaOption22 extends LavaLogging22 {
 		$this->add_class('invalid');
 	}
 	public function set_value($newValue = ""){
-		$this->_log("set_value() was run.");
+		$this->logger->_log("set_value() was run.");
 		$newValue = $this->validate($newValue);
 		if ( $newValue == "" && $this->is_required() ){
 			$this->invalidate();

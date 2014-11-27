@@ -1,4 +1,4 @@
-<?php if ( ! defined( "ECT_RELATED_CONTENT_PATH" ) ) {
+<?php if ( ! defined( "LAVAPLUGINPATH" ) ) {
   wp_die();
 }
 
@@ -186,7 +186,7 @@ $static = array(
 		'page_title'  => 'Featured Posts',
 		'menu_title'  => 'Featured Posts',
 		'capability'  => 'manage_options',
-		'menu_slug'   => 'related-content-options'
+		'menu_slug'   => 'lava-plugin'
 	)
 );
 /* EOF */

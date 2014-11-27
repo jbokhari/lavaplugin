@@ -1,5 +1,5 @@
 <?php
-final class LavaOption_bool extends LavaOption22 {
+final class LavaOption_bool extends LavaOption {
 	public function get_option_field_html(){
 		$value = $this->get_value();
 		$classes = $this->input_classes();

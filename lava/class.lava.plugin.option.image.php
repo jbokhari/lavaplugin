@@ -1,5 +1,5 @@
 <?php
-final class LavaOption_image extends LavaOption22 {
+final class LavaOption_image extends LavaOption {
 	public function get_option_field_html(){
 		$value = $this->get_value();
 		$value = esc_url_raw($value);
