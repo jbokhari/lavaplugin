@@ -33,6 +33,7 @@ require_once "lava/interface/interface.lava.logger.php";
 //default class for debugging and error logging
 require_once "lava/class.lava.logging.php";
 //LavaFactory creates lavaoptions
+require_once "lava/class.lava.class.styler.php";
 require_once "lava/class.lava.factory.php";
 // Load abstract LavaOption class extended by options
 require_once "lava/class.lava.plugin.options.php";

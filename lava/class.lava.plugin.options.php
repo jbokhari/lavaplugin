@@ -24,6 +24,7 @@ abstract class LavaOption {
 	protected $invalid = true;
 	function __construct($prefix, array $options, $no = 0){
 		$this->ancestor = $ancestor;
+		$this->styler = new LavaClassStyler();
 		$this->prefix = $prefix;
 		if ( isset( $options['name'] ) ){
 			$this->name = $options['name'];
@@ -46,7 +47,7 @@ abstract class LavaOption {
 			$this->id = $options['id'] = $this->prefix . $options['name'];
 		$this->default_optionals($options);
 		$this->init_tasks($options);
-		$this->add_container_class("{$this->type}-field");
+		$this->styler->add_container_class("{$this->type}-field");
 	}
 	public function generate_logging_object(){
 		return new LavaLogging($this->name);
@@ -62,54 +63,25 @@ abstract class LavaOption {
 	 * @param array or string $class 
 	 * @return void
 	 */
-	public function add_container_class($class){
-		$this->add_class($class, "container_classes");
-	}
-	public function add_label_class($class){
-		$this->add_class($class, "label_classes");
-	}
-	public function add_outer_class($class){
-	}
-	public function input_classes(){
-		return $this->get_classes_list("classes");
-	}
-	public function get_classes_list($ref = "classes"){
-		$classes = implode( " ", $this->$ref );
-		// $classes = sanitize_html_class( $classes );
-		return $classes;
-	}
-	public function add_class($class, $ref = "classes"){
-		if (is_array($class))
-			$this->$this->$ref = array_merge($this->$ref, $class);
-		else array_push($this->$ref, $class);
-	}
+
 	/**
 	 * Generates and returns option label html
 	 * @return string
 	 */
 	public function get_option_label_html(){
 		$html = "";
-		$classes = $this->get_label_html_classes();
+		$classes = $this->styler->get_label_html_classes();
 		$required = $this->required ? "*" : "";
 		$html .= "<label class='$classes' for='{$this->id}'>{$this->label}{$required}</label>";
 		return $html;
 	}
-	/**
-	 * Alias of add_label_class Gets html ready list of label classes, separated by spaces
-	 * @return string
-	 */
-	public function get_label_html_classes(){
-		return $this->get_classes_list("label_classes");
-	}
-	public function get_container_html_classes(){
-		return $this->get_classes_list("container_classes");
-	}
+
 
 	public function get_form_js(){
 		return "";
 	}
 	final public function get_option_header_html(){
-		$classes = $this->get_container_html_classes();
+		$classes = $this->styler->get_container_html_classes();
 		return "<div id='{$this->id}-container' class='option-block field-{$this->fieldnumber} $classes'>";
 	}
 	final public function get_option_footer_html(){

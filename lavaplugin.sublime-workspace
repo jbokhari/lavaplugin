@@ -343,23 +343,15 @@
 			"file": "plugin.php",
 			"settings":
 			{
-				"buffer_size": 3529,
+				"buffer_size": 3578,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "lava/class.lava.plugin.options.php",
+			"file": "lava/class.lava.class.styler.php",
 			"settings":
 			{
-				"buffer_size": 6068,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "lava/class.lava.plugin.option.repeater.php",
-			"settings":
-			{
-				"buffer_size": 4565,
+				"buffer_size": 1461,
 				"line_ending": "Windows"
 			}
 		},
@@ -384,6 +376,22 @@
 			"settings":
 			{
 				"buffer_size": 4275,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "lava/class.lava.plugin.option.image.php",
+			"settings":
+			{
+				"buffer_size": 1291,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "lava/class.lava.plugin.options.php",
+			"settings":
+			{
+				"buffer_size": 5156,
 				"line_ending": "Windows"
 			}
 		}
@@ -564,6 +572,8 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.repeater.php",
+		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.options.php",
 		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.sortable.php",
 		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.core.php",
 		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.factory.php",
@@ -571,7 +581,6 @@
 		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/interface/interface.lava.logger.php",
 		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.logging.php",
 		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/options/js/lava.option.repeater.default.js",
-		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.repeater.php",
 		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/plugin.php",
 		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.image.php",
 		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.option.textarea.php",
@@ -610,7 +619,6 @@
 		"/C/Users/Jamee/Desktop/css.backup.css",
 		"/C/Users/Jamee/AppData/Local/Temp/fz3temp-1/wp-config.php",
 		"/C/Users/Jamee/Desktop/header.backup",
-		"/C/Users/Jamee/Documents/websites/dev/wp-content/plugins/lavaplugin/lava/class.lava.plugin.options.php",
 		"/C/Users/Jamee/AppData/Local/Temp/fz3temp-1/home.php",
 		"/C/Users/Jamee/AppData/Local/Temp/fz3temp-1/index.php",
 		"/C/Users/Jamee/AppData/Local/Temp/fz3temp-1/page.php",
@@ -710,6 +718,19 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"LavaStyler",
+			"outer_classes",
+			"$this->$ref",
+			"label_classes",
+			"add_class",
+			"container_classes",
+			"add_class",
+			"ref",
+			"$ref",
+			"get_label_html_classes",
+			"class",
+			"get_classes_list",
+			";",
 			"logger",
 			"Email",
 			"_error(",
@@ -824,20 +845,7 @@
 			"custom_header",
 			"main_menu",
 			"if (",
-			"Chicago",
-			"greek",
-			"Greek",
-			"greek",
-			"header nav ul li ul",
-			"logger",
-			"function _log",
-			"_log",
-			"Logger",
-			"logger",
-			"abstract",
-			"_log",
-			"log",
-			"self::"
+			"Chicago"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -855,7 +863,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -863,15 +871,15 @@
 					"file": "plugin.php",
 					"settings":
 					{
-						"buffer_size": 3529,
+						"buffer_size": 3578,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3460,
-								3460
+								1334,
+								1334
 							]
 						],
 						"settings":
@@ -883,62 +891,30 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1740.0,
+						"translation.y": 291.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "lava/class.lava.plugin.options.php",
+					"file": "lava/class.lava.class.styler.php",
 					"settings":
 					{
-						"buffer_size": 6068,
+						"buffer_size": 1461,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2303,
-								2303
+								812,
+								812
 							]
 						],
 						"settings":
 						{
 							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1071.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "lava/class.lava.plugin.option.repeater.php",
-					"settings":
-					{
-						"buffer_size": 4565,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5,
-								5
-							]
-						],
-						"settings":
-						{
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
 							"syntax": "Packages/PHP/PHP.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
@@ -949,7 +925,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 2,
 					"file": "lava/class.lava.factory.php",
 					"settings":
 					{
@@ -979,7 +955,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 3,
 					"file": "lava/class.lava.logging.php",
 					"settings":
 					{
@@ -1009,7 +985,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 4,
 					"file": "settings.php",
 					"settings":
 					{
@@ -1033,7 +1009,67 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2835.0,
+						"translation.y": 819.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "lava/class.lava.plugin.option.image.php",
+					"settings":
+					{
+						"buffer_size": 1291,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								181,
+								189
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "lava/class.lava.plugin.options.php",
+					"settings":
+					{
+						"buffer_size": 5156,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								365,
+								365
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1087,8 +1123,24 @@
 		"selected_items":
 		[
 			[
+				"styler",
+				"lava/class.lava.class.styler.php"
+			],
+			[
 				"options",
 				"lava/class.lava.plugin.options.php"
+			],
+			[
+				"lavastyler",
+				"lava/class.lava.styler.php"
+			],
+			[
+				"options.php",
+				"lava/class.lava.plugin.options.php"
+			],
+			[
+				"image",
+				"lava/class.lava.plugin.option.image.php"
 			],
 			[
 				"optios",
@@ -1131,10 +1183,6 @@
 				"lava/class.lava.plugin.options.php"
 			],
 			[
-				"image",
-				"lava/class.lava.plugin.option.image.php"
-			],
-			[
 				"lavalogging",
 				"lava/class.lava.logging.php"
 			],
@@ -1157,10 +1205,6 @@
 			[
 				"css",
 				"hq-enhanced.scss"
-			],
-			[
-				"options.php",
-				"lava/class.lava.plugin.options.php"
 			],
 			[
 				"loging",
@@ -1589,14 +1633,6 @@
 			[
 				"columns",
 				"dev-tools/inc/jdt_columns.php"
-			],
-			[
-				"column",
-				"dev-tools/inc/jdt_columns.php"
-			],
-			[
-				"colu",
-				"techno/library/js/columns.js"
 			]
 		],
 		"width": 0.0

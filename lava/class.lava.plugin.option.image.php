@@ -3,7 +3,7 @@ final class LavaOption_image extends LavaOption {
 	public function get_option_field_html(){
 		$value = $this->get_value();
 		$value = esc_url_raw($value);
-		$classes = $this->input_classes();
+		$classes = $this->styler->input_classes();
 		$required = $this->required_html();
 		$name = $this->name;
 		$id = $this->id;
