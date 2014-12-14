@@ -186,25 +186,25 @@ if (!class_exists('LavaCorePlugin')) :
 		public function save_admin(){
 			if ( get_current_screen() == $this->settings_page ){
 
-			}
-			$savepost = $this->prefix . "save_post";
-			if( isset( $_POST[$savepost] ) ) :
-				$noncename = $this->prefix . 'nonce';
-				$nonceaction = $this->prefix . 'do_save_nonce';
-				$nonce = ( isset( $_POST[$noncename] ) ) ? $_POST[$noncename] : '' ;
-				$current_tab = ( isset( $_POST['tab'] ) ? $_POST['tab'] : null );
-				if ( wp_verify_nonce( $nonce, $nonceaction ) ){
-					$this->logger->_log("Nonce verified for saving options.");
-				 	if ( current_user_can( 'manage_options' ) ){
-				 		$this->logger->_log("User verified for saving options.");
-						$this->update_admin_options($current_tab);
+				$savepost = $this->prefix . "save_post";
+				if( isset( $_POST[$savepost] ) ) :
+					$noncename = $this->prefix . 'nonce';
+					$nonceaction = $this->prefix . 'do_save_nonce';
+					$nonce = ( isset( $_POST[$noncename] ) ) ? $_POST[$noncename] : '' ;
+					$current_tab = ( isset( $_POST['tab'] ) ? $_POST['tab'] : null );
+					if ( wp_verify_nonce( $nonce, $nonceaction ) ){
+						$this->logger->_log("Nonce verified for saving options.");
+					 	if ( current_user_can( 'manage_options' ) ){
+					 		$this->logger->_log("User verified for saving options.");
+							$this->update_admin_options($current_tab);
+						} else {
+							$this->notifier->add( "You lack permission to modify these settings.", "error" );
+						}
 					} else {
-						$this->notifier->add( "You lack permission to modify these settings.", "error" );
+						$this->notifier->add( "There was an error with the nonce field. Please try again.", "error" );
 					}
-				} else {
-					$this->notifier->add( "There was an error with the nonce field. Please try again.", "error" );
-				}
-			endif;
+				endif;
+			}
 		}
 		/**
 		 * Display admin page by printing html to page.
