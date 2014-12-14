@@ -10,6 +10,9 @@
 .cf {
     *zoom: 1;
 }
+.message {
+	background: white;
+}
 .repeater-field .repeater-field-fields ul {
 	padding: 2px 0;
 	margin: 0;

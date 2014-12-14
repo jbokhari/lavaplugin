@@ -30,7 +30,9 @@ define("LAVAPLUGINURL", plugin_dir_url( __FILE__ ) );
 require_once('lava/class.lava.plugin.core.php');
 //logging/error class implementation
 require_once "lava/interface/interface.lava.logger.php";
+require_once "lava/interface/interface.lava.notifier.php";
 //default class for debugging and error logging
+require_once "lava/class.lava.notifier.php";
 require_once "lava/class.lava.logging.php";
 //LavaFactory creates lavaoptions
 require_once "lava/class.lava.factory.php";
@@ -43,10 +45,10 @@ require_once "lava/class.lava.plugin.options.php";
  * @package ECT Related Content
  */
 class LavaPlugin extends LavaCorePlugin {
-	public $prefix = 'lp_';
+	static $prefix = 'lp_';
 	public $ver = '1.0.0';
 	public $option_prefix = 'lp_';
-	public $name = 'lp';
+	static $name = 'LavaPlugin';
 	public $classname;
 	public $localize_object = 'LPGLOBAL';
 	protected $plugin_slug;
@@ -66,40 +68,13 @@ class LavaPlugin extends LavaCorePlugin {
 	function get_option($option, $default = null){
 		return $this->get_cache($option, $default);
 	}
-	/**
-	 * Overrides default functionality
-	 * @return type
-	 */
-	function admin_enqueue_scripts_and_styles(){
-		$version = $this->get_script_version();
-		if ( $this->useFrontendCss ){
-			wp_enqueue_style( 'related-content-admincss', $this->cssdir . 'admin.css', array(), $version, $media = 'all' );
-		}
-
-		if ( $this->useFrontendJs ){
-			wp_register_script( 'related-content-adminjs', $this->jsdir . 'admin.js', 'jquery', $version );
-
-			$js_global = $this->get_localized_js_object_name();
-			$adminJSVars = $this->set_frontend_loc_js_values();
-			apply_filters( "related-content-admin-js-vars", $adminJSVars );
-			wp_localize_script( 
-				'related-content-adminjs',
-				$js_global,
-				$adminJSVars
-			);
-
-			wp_enqueue_script('related-content-adminjs');
-		}
-		wp_enqueue_script( 'suggest' );
-		wp_enqueue_script( 'autocomplete', $this->jsdir . 'jquery-ui-autocomplete.min.js', array('jquery'), $version );	
-	}
 	function add_settings_page($links) { 
 	  $settings_link = '<a href="'.$this->static['options_page']['parent_slug'].'?page='.$this->static['options_page']['menu_slug'].'">Settings</a>'; 
 	  array_unshift($links, $settings_link); 
 	  return $links; 
 	}
 }
-
-$factory = new LavaFactory;
-
-$lavaplugin = new LavaPlugin($factory);
+$optionfactory = new LavaFactory();
+$loggingobject = new LavaLogging( LavaPlugin::$name );
+$notifierobject = new LavaNotifier( LavaPlugin::$prefix );
+$lavaplugin = new LavaPlugin($optionfactory, $loggingobject, $notifierobject);

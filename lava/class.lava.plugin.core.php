@@ -10,7 +10,6 @@
 if (!class_exists('LavaCorePlugin')) :
 
 	class LavaCorePlugin {
-		public $logger;
 		public $optionspage = array();
 		public $options = array();
 		public $cache = array();
@@ -22,7 +21,6 @@ if (!class_exists('LavaCorePlugin')) :
 		public $newStatic;
 		public $newDynamic;
 		public $tabs;
-		public $name;
 		public $dir;
 		public $jsdir;
 		public $cssdir;
@@ -33,10 +31,11 @@ if (!class_exists('LavaCorePlugin')) :
 		protected $option_prefix;
 		protected $ver;
 
-		public function __construct($factory){
+		public function __construct($optionfactory = null, $loggingobject = null, $notifierobject = null){
 
-			$this->factory = $factory;
-			$this->logger = $this->generate_logging_object();
+			$this->factory = $optionfactory ? $optionfactory : null;
+			$this->logger = $loggingobject ? $loggingobject : null;
+			$this->notifier = $notifierobject ? $notifierobject : null;
 
 			$this->set_options($options);
 			$this->dir = plugin_dir_url( __FILE__ );
@@ -50,9 +49,6 @@ if (!class_exists('LavaCorePlugin')) :
 			$this->enqueue_scripts();
 			add_action( 'admin_head', array($this, "save_admin"));
 			$this->init();
-		}
-		public function generate_logging_object(){
-			return new LavaLogging("Plugin Core");
 		}
 		public static function addsiscript($param){
 			vardump($param);
@@ -176,11 +172,11 @@ if (!class_exists('LavaCorePlugin')) :
 				}
 			}
 			if( $affected > 0 ){
-				$msg .= "Options have been saved.";
+				$this->notifier->add( "Options have been saved.", "updated" );
 			} else {
-				$msg .= 'No options were changed!';
+				var_dump($this->notifier);
+				$this->notifier->add( "No options were changed!", "notice" );
 			}
-			return $msg;
 		}
 		/**
 		 * Determines whether or not to save plugin settings. Checks if save_post variable is set by hidden field in this plugin, verifies nonce and user permission. If all passes, runs update_admin_options()
@@ -188,29 +184,25 @@ if (!class_exists('LavaCorePlugin')) :
 		 * @return (string) A message based on actions performed (or not performed).
 		 */
 		public function save_admin(){
+			if ( get_current_screen() == $this->settings_page ){
+
+			}
 			$savepost = $this->prefix . "save_post";
-			$this->logger->_log("save_admin() started");
-			// print_r($_POST);
 			if( isset( $_POST[$savepost] ) ) :
-				$this->logger->_log("$savepost was set");
-				// print_r($_POST);
-				$this->logger->_log("Going to attempt to save values");
 				$noncename = $this->prefix . 'nonce';
 				$nonceaction = $this->prefix . 'do_save_nonce';
 				$nonce = ( isset( $_POST[$noncename] ) ) ? $_POST[$noncename] : '' ;
 				$current_tab = ( isset( $_POST['tab'] ) ? $_POST['tab'] : null );
 				if ( wp_verify_nonce( $nonce, $nonceaction ) ){
-					$this->logger->_log("Nonce verified.");
+					$this->logger->_log("Nonce verified for saving options.");
 				 	if ( current_user_can( 'manage_options' ) ){
-				 		$this->logger->_log("User verified");
-						$this->admin_message = $this->update_admin_options($current_tab);
+				 		$this->logger->_log("User verified for saving options.");
+						$this->update_admin_options($current_tab);
 					} else {
-						$this->logger->_log("User permission does not allow saving field data. Nothing was changed.");
-						$this->admin_message = "You lack permission to modify these settings.";
+						$this->notifier->add( "You lack permission to modify these settings.", "error" );
 					}
 				} else {
-					$this->logger->_log("Nonce could not verify.");
-					$this->admin_message = "There was an error with the nonce field. Please try again.";
+					$this->notifier->add( "There was an error with the nonce field. Please try again.", "error" );
 				}
 			endif;
 		}
@@ -229,10 +221,6 @@ if (!class_exists('LavaCorePlugin')) :
 			echo "<h2 class='" . $this->prefix . "option-page-title'>Plugin Options</h2>";
 
 			$this->do_tabs($current_tab);
-
-			if($this->admin_message != ''){
-				echo "<div id='message " . $this->prefix. "message' class='updated'><p>{$this->admin_message}</p></div>";
-			}
 
 			echo "<form action='' method='post'>";
 			$this->generate_option_fields($current_tab);
@@ -288,7 +276,7 @@ if (!class_exists('LavaCorePlugin')) :
 			wp_enqueue_media();
 			$function = array($this, 'display_admin_page');
 			$admin_page = $this->static['options_page'];
-			add_submenu_page( $admin_page['parent_slug'], $admin_page['page_title'], $admin_page['menu_title'], $admin_page['capability'], $admin_page['menu_slug'], $function );
+			$this->settings_page = add_submenu_page( $admin_page['parent_slug'], $admin_page['page_title'], $admin_page['menu_title'], $admin_page['capability'], $admin_page['menu_slug'], $function );
 		}
 		/**
 		 * Creates information field that takes no input
