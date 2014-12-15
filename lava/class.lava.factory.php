@@ -14,7 +14,11 @@ final class LavaFactory {
 			return;
 		require_once "class.lava.plugin.option." . $type . ".php";
 		$object = "LavaOption_{$type}";
-		$return = new $object($prefix, $options, self::$no, $plugin);
+		$no = self::$no;
+		if ( isset( $options['subfield'] ) ) {
+			$no .= "_{$options['subfield']}";
+		}
+		$return = new $object($prefix, $options, $no, $plugin);
 		return $return;
 
 	}

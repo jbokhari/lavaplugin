@@ -42,25 +42,27 @@ if (!class_exists('LavaCorePlugin')) :
 			$this->cssdir = $this->dir . '../library/css/';
 			$this->jsdir = $this->dir . '../library/js/';
 
-			register_activation_hook( __FILE__, array($this, 'plugin_activate') );
-			register_deactivation_hook( __FILE__, 'plugin_deactivate' );
+			//TODO add activation and deactivation hooks
 
 			add_action( 'admin_menu', array($this, 'add_admin_page_to_menu') );	
 			$this->enqueue_scripts();
-			add_action( 'admin_head', array($this, "save_admin"));
+			add_action( 'admin_head', array($this, "save_admin") );
 			$this->init();
+			add_action( 'current_screen', array( $this, "get_current_screen" ) );
+
+
+		}
+		public function get_current_screen(){
+			$this->current_screen = get_current_screen();
 		}
 		public static function addsiscript($param){
 			vardump($param);
 		}
-		final static function get_dir(){
-			return plugin_dir_url( __FILE__ );
-		}
-		final static function get_js_dir(){
+		function get_js_dir(){
 			return plugin_dir_url( __FILE__ ) . "../library/js/";
 		}
-		final static function get_css_dir(){
-			return plugin_dir_url( __FILE__ ) . "../library/css/";
+		function get_css_dir(){
+			return $this->jsdir;
 		}
 		public function enqueue_scripts(){
 			add_action( 'wp_enqueue_scripts', array($this, 'frontend_enqueue_scripts_and_styles'), 999);
@@ -82,19 +84,6 @@ if (!class_exists('LavaCorePlugin')) :
 			foreach( $dynamic as $option ) {
 				$name = $option['name'];
 				$this->options[$name] = $this->factory->create($this->prefix, $option, $this->classname );
-			}
-		}
-		/** TODO: Broken! These need to be rewritten to follow best practices for de/activation **/ 
-		public function plugin_activate(){
-			foreach( $this->dynamic as $name => $values){
-				$option = $this->prefix($name);
-				add_option( $option, $values['default'] );
-			}
-		}
-		public function plugin_deactivate(){
-			foreach( $this->dynamic as $name => $values){
-				$option = $this->prefix($name);
-				delete_option( $option );
 			}
 		}
 		public function do_tabs($current){
@@ -174,9 +163,14 @@ if (!class_exists('LavaCorePlugin')) :
 			if( $affected > 0 ){
 				$this->notifier->add( "Options have been saved.", "updated" );
 			} else {
-				var_dump($this->notifier);
 				$this->notifier->add( "No options were changed!", "notice" );
 			}
+		}
+		public function is_options_page(){	
+			if( $this->current_screen == null ){
+				throw new Exception("settings_page not yet registered. You probably used is_options_page() too early.");
+			}
+			return ( $this->current_screen->id == $this->settings_page );
 		}
 		/**
 		 * Determines whether or not to save plugin settings. Checks if save_post variable is set by hidden field in this plugin, verifies nonce and user permission. If all passes, runs update_admin_options()
@@ -184,7 +178,7 @@ if (!class_exists('LavaCorePlugin')) :
 		 * @return (string) A message based on actions performed (or not performed).
 		 */
 		public function save_admin(){
-			if ( get_current_screen() == $this->settings_page ){
+			if ( $this->is_options_page() ){
 
 				$savepost = $this->prefix . "save_post";
 				if( isset( $_POST[$savepost] ) ) :
@@ -239,17 +233,14 @@ if (!class_exists('LavaCorePlugin')) :
 			echo "</div><!-- EOF WRAP -->";
 		}
 		public function debug_info(){
-			// return false;
-			//Used to do all this...
-			// if( $this->is_debug_mode() ){ // no longer defined
-			// 	// print_r($this->cache);
+			if ($this->logger){
 				$this->logger->display_errors();
-			// 	$this->display_logs();
 				foreach($this->options as $option){
-			// 		echo $option->label;
-					$option->logger->display_logs();
-					$option->logger->display_errors();
-			// 	}
+					if ($option->logger){
+						$option->logger->display_logs();
+						$option->logger->display_errors();
+					}
+				}
 			}
 		}
 		public function generate_option_fields($tab){
@@ -273,7 +264,7 @@ if (!class_exists('LavaCorePlugin')) :
 		 * @return type
 		 */
 		public function add_admin_page_to_menu(){
-			wp_enqueue_media();
+			
 			$function = array($this, 'display_admin_page');
 			$admin_page = $this->static['options_page'];
 			$this->settings_page = add_submenu_page( $admin_page['parent_slug'], $admin_page['page_title'], $admin_page['menu_title'], $admin_page['capability'], $admin_page['menu_slug'], $function );
@@ -331,6 +322,7 @@ if (!class_exists('LavaCorePlugin')) :
 		public function admin_enqueue_scripts_and_styles(){
 			$version = $this->get_script_version();
 			$name = $this->name;
+			if ( $this->is_options_page() ) wp_enqueue_media();
 			if ( $this->useAdminCss ){
 				wp_enqueue_style( 'lavaadmincss', $this->cssdir . 'admin.css', array(), $version, $media = 'all' );
 			}

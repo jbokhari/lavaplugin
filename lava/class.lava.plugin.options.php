@@ -11,7 +11,7 @@ abstract class LavaOption {
 	public $label;
 	public $id;
 	public $value;
-	public $type = "str";
+	public $type = "";
 	public $ui = "default";
 	public $default = "";
 	public $in_menu = "true";
@@ -37,6 +37,7 @@ abstract class LavaOption {
 		} else {
 			$this->logger->_error("<code>Label</code> field not set for option {$this->name}. The label field and name are required.");
 		} 
+		$this->type = $options['type'];
 		$this->classes[] = "field-" . $no;
 		$this->fieldnumber = $no;
 		//for repeater fields
@@ -45,8 +46,19 @@ abstract class LavaOption {
 		else
 			$this->id = $options['id'] = $this->prefix . $options['name'];
 		$this->default_optionals($options);
+		$this->register_needed_scripts();
 		$this->init_tasks($options);
 		$this->add_container_class("{$this->type}-field");
+		add_action( "admin_enqueue_scripts", array( $this, 'enqueue_scripts' ) );
+	}
+	public function enqueue_scripts(){
+		if ( isset($this->script_source) && $this->script_source != "" ){
+			wp_enqueue_script( $this->ui . "_" . $this->type , $this->script_source, array("jquery") );
+		}
+	}
+	public function register_script( $src ){
+		$this->requires_script = true;
+		$this->script_source = LAVAPLUGINURL . "/lava/options/js/" . $src;
 	}
 	public function generate_logging_object(){
 		return new LavaLogging($this->name);
@@ -69,6 +81,7 @@ abstract class LavaOption {
 		$this->add_class($class, "label_classes");
 	}
 	public function add_outer_class($class){
+		$this->add_class($class, "outer_classes");
 	}
 	public function input_classes(){
 		return $this->get_classes_list("classes");
@@ -79,9 +92,15 @@ abstract class LavaOption {
 		return $classes;
 	}
 	public function add_class($class, $ref = "classes"){
-		if (is_array($class))
-			$this->$this->$ref = array_merge($this->$ref, $class);
-		else array_push($this->$ref, $class);
+		if (is_array($class)){
+			$this->$ref = array_merge($this->$ref, $class);
+			return;
+		}
+		if ( !isset($this->$ref) ){
+			$this->$ref = array();
+		}
+		array_push($this->$ref, $class);
+		return;
 	}
 	/**
 	 * Generates and returns option label html
@@ -98,6 +117,9 @@ abstract class LavaOption {
 	 * Alias of add_label_class Gets html ready list of label classes, separated by spaces
 	 * @return string
 	 */
+	public function get_outer_class(){
+		return $this->get_classes_list("outer_classes");
+	}
 	public function get_label_html_classes(){
 		return $this->get_classes_list("label_classes");
 	}
@@ -192,6 +214,9 @@ abstract class LavaOption {
 		return $this->required ? 
 			"required='required'" :
 			"";
+	}
+	public function register_needed_scripts(){
+		return false;
 	}
 	abstract public function validate($newValue = "");
 	abstract public function get_option_field_html();

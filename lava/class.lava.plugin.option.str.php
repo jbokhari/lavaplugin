@@ -9,6 +9,7 @@
 final class LavaOption_str extends LavaOption {
 	public function get_option_field_html(){
 		$value = $this->get_value();
+		$value = stripcslashes($value);
 		$value = esc_attr($value);
 		$classes = $this->input_classes();
 		$required = $this->required_html();

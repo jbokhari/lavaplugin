@@ -6,7 +6,7 @@ jQuery(document).ready(function($){
 		var repeatercount = $('#' + id + '__meta_rows');
 		var container = $("#" + id + "-fields ul");
 		container.find("li").each(function(){
-			var exout = $("<span>x</span>").on("click", function(){
+			var exout = $("<span class='exout'>&#10006;</span>").on("click", function(){
 				var r = confirm("Are you sure you want to delete this field?");
 				if (r)
 					$(this).parent().remove();
@@ -17,20 +17,20 @@ jQuery(document).ready(function($){
 			});
 			$(this).append(exout);
 		})
-		console.log("test");
 		$this.on('click', function(e){
-			console.log("test");
 			e.preventDefault();
 			var id = $(this).data("id");
 			var rows = container.find(".repeater-row");
-			var clone = rows.last().clone();
+			var clone = rows.last().clone(true);
 			clone.find("[type='hidden'], [type='text'], [type='email'], [type='number'], [type='password'], [type='url'], [type='date'], [type='text'], textarea").val("");
 			clone.find("[type='checkbox'],[type='radio']").removeAttr('checked');
 			clone.find(".lava-color-chooser").val('');
 			clone.find("select").removeAttr("selected");
 			clone.appendTo(container);
 			var rows = parseInt( repeatercount.val() ) + 1;
+			console.log(clone);
 			repeatercount.val(rows);
+			postCloneCleanup(clone);
 		}).after(repeatercount);
 		// var sortables = $('.lava-sortable');
 		container.sortable({
@@ -42,6 +42,18 @@ jQuery(document).ready(function($){
 			containment: "parent"
 		});
 	});
+	var postCloneCleanup = function(el){
+		var image = $(".image-container", el);
+		image.each(function(){
+			var imagecontainer = $(this);
+			var id = imagecontainer.data("image-id");
+			var newid = "new-image_" + Math.floor( Math.random() * 1000000 ).toString() + Math.floor( Math.random() * 1000000 ).toString();
+			// console.log(newid);
+			imagecontainer.data("image-id", newid);
+			$(imagecontainer).find(".image-preview").attr("src", "");
+			$(imagecontainer).find(".image-source").val("");
+		});
+	}
 	var updateOrder = function(){
 		return;
 	}

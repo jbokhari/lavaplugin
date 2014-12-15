@@ -12,7 +12,6 @@ class LavaLogging implements LavaLogger{
 	public $error = array();
 	public $log = array();
 	public function __construct($id = "Unknown Object"){
-		var_dump($id);
 		$this->id = $id;
 	}
 	public function display_logs( $echo = true, $verbose = false ){
