@@ -39,6 +39,7 @@ require_once "lava/class.lava.logging.php";
 require_once "lava/class.lava.factory.php";
 // Load abstract LavaOption class extended by options
 require_once "lava/class.lava.plugin.options.php";
+require_once "lava/class.lava.postmetabox.php";
 
 /**
  * Class LavaPlugin
@@ -62,6 +63,16 @@ class LavaPlugin extends LavaCorePlugin {
 		$this->useAdminJs = true;
 		$plugin = plugin_basename(__FILE__); 
 		add_filter("plugin_action_links_$plugin", array($this, 'add_settings_page') );
+		$this->meta_box_actions();
+	}
+	public function meta_box_actions(){
+		if ( is_admin() ) {
+		    add_action( 'load-post.php', array( $this, 'create_meta_box_class' ) );
+		    add_action( 'load-post-new.php', array( $this, 'create_meta_box_class' ) );
+		}
+	}
+	public function create_meta_box_class(){
+		$this->meta_boxes = new LavaPostMetaBox( 'post', $this->options['Repeater'] );
 	}
 	function option($option, $default = null){
 		echo $this->get_option($option, $default);
